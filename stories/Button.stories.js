@@ -5,11 +5,7 @@ export default {
   title: "Example/Button",
   component: Button,
   parameters: {
-    myAddonParameter: `
-<MyComponent boolProp scalarProp={1} complexProp={{ foo: 1, bar: '2' }}>
-  <SomeOtherComponent funcProp={(a) => a.id} />
-</MyComponent>
-`,
+    myAddonParameter: 'https://docs.google.com/document/d/e/2PACX-1vTzp7tFJDaIk1E8Amh6xxMhSrWox2PTMqPHLHrRbxpkamXVtnrnVHjpIGqcaIn1EhN92_8Zb2KAHCCR/pub',
   },
 };
 
@@ -19,6 +15,7 @@ export const Primary = Template.bind({});
 Primary.args = {
   primary: true,
   label: "Button",
+  my: 'https://docs.google.com/document/d/e/2PACX-1vTzp7tFJDaIk1E8Amh6xxMhSrWox2PTMqPHLHrRbxpkamXVtnrnVHjpIGqcaIn1EhN92_8Zb2KAHCCR/pub',
 };
 
 export const Secondary = Template.bind({});

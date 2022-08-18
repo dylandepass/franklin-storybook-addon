@@ -4,6 +4,7 @@ import { STORY_CHANGED } from "@storybook/core-events";
 import { EVENTS } from "./constants";
 
 export const withRoundTrip: DecoratorFunction = (storyFn) => {
+  console.log('a');
   const emit = useChannel({
     [EVENTS.REQUEST]: () => {
       emit(EVENTS.RESULT, {

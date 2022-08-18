@@ -7,10 +7,12 @@ export const Tool = () => {
   const [{ myAddon }, updateGlobals] = useGlobals();
 
   const toggleMyTool = useCallback(
-    () =>
+    () => {
       updateGlobals({
         myAddon: myAddon ? undefined : true,
-      }),
+      }
+    )},
+
     [myAddon]
   );
 

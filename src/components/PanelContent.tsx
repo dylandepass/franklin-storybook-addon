@@ -1,7 +1,8 @@
-import React, { Fragment } from "react";
+import React, { Fragment, ReactElement } from "react";
 import { styled, themes, convert } from "@storybook/theming";
 import { TabsState, Placeholder, Button } from "@storybook/components";
 import { List } from "./List";
+import { useStorybookState } from '@storybook/api';
 
 export const RequestDataButton = styled(Button)({
   marginTop: "1rem",
@@ -26,8 +27,11 @@ export const PanelContent: React.FC<PanelContentProps> = ({
   results,
   fetchData,
   clearData,
-}) => (
-  <TabsState
+}): ReactElement<any, any> => {
+
+  const state = useStorybookState();
+  console.log('sss', state);
+ return <TabsState
     initial="overview"
     backgroundColor={convert(themes.normal).background.hoverable}
   >
@@ -73,4 +77,4 @@ export const PanelContent: React.FC<PanelContentProps> = ({
       <List items={results.warning} />
     </div>
   </TabsState>
-);
+};

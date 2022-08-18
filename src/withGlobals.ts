@@ -30,15 +30,21 @@ function displayToolState(selector: string, state: any) {
     preElement = document.createElement("pre");
     preElement.style.setProperty("margin-top", "2rem");
     preElement.style.setProperty("padding", "1rem");
-    preElement.style.setProperty("background-color", "#eee");
+    preElement.style.setProperty("background-color", "#f00");
     preElement.style.setProperty("border-radius", "3px");
-    preElement.style.setProperty("max-width", "600px");
+    preElement.style.setProperty("max-width", "100%");
     rootElement.appendChild(preElement);
   }
 
-  preElement.innerText = `This snippet is injected by the withGlobals decorator.
-It updates as the user interacts with the ⚡ tool in the toolbar above.
+  const button = document.createElement('button');
+  button.textContent = "Click Me";
+  let self = this;
 
-${JSON.stringify(state, null, 2)}
-`;
+  let boundFunction = (function() { // parenthesis are not necessary
+      alert(this);             // but might improve readability
+  }).bind(this); 
+
+  button.addEventListener('click', boundFunction);
+  
+  preElement.appendChild(button);
 }
