@@ -1,5 +1,17 @@
 # v0.0.6 (Tue Aug 30 2022)
 
+#### ⚠️ Pushed to `main`
+
+- fix: add npm namespace ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
+# v0.0.6 (Tue Aug 30 2022)
+
 
 
 ---
