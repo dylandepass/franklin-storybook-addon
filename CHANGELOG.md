@@ -1,0 +1,12 @@
+# v0.0.2 (Tue Aug 30 2022)
+
+#### ⚠️ Pushed to `main`
+
+- feat: initial features ([@dylandepass](https://github.com/dylandepass))
+- initial commit ([@dylandepass](https://github.com/dylandepass))
+- project setup ([@dylandepass](https://github.com/dylandepass))
+- Initial commit ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
