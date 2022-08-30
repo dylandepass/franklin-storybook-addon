@@ -1,5 +1,17 @@
 # v0.0.7 (Tue Aug 30 2022)
 
+#### ⚠️ Pushed to `main`
+
+- fix: dependencies ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
+# v0.0.7 (Tue Aug 30 2022)
+
 
 
 ---
