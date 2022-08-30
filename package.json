@@ -48,6 +48,11 @@
     "@storybook/addon-essentials": "^6.5.8",
     "@storybook/cli": "^6.5.10",
     "@storybook/html": "^6.5.9",
+    "@storybook/addons": "^6.5.8",
+    "@storybook/api": "^6.5.8",
+    "@storybook/components": "^6.5.8",
+    "@storybook/core-events": "^6.5.8",
+    "@storybook/theming": "^6.5.8",
     "@types/react": "^18.0.17",
     "auto": "^10.3.0",
     "babel-loader": "^8.1.0",
@@ -60,23 +65,6 @@
     "rimraf": "^3.0.2",
     "typescript": "^4.2.4",
     "zx": "^1.14.1"
-  },
-  "peerDependencies": {
-    "@storybook/addons": "^6.5.8",
-    "@storybook/api": "^6.5.8",
-    "@storybook/components": "^6.5.8",
-    "@storybook/core-events": "^6.5.8",
-    "@storybook/theming": "^6.5.8",
-    "react": "^16.8.0 || ^17.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
-  },
-  "peerDependenciesMeta": {
-    "react": {
-      "optional": true
-    },
-    "react-dom": {
-      "optional": true
-    }
   },
   "publishConfig": {
     "access": "public",
