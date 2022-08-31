@@ -1,3 +1,15 @@
+# v0.0.9 (Tue Aug 30 2022)
+
+#### ⚠️ Pushed to `main`
+
+- fix: template export ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.8 (Tue Aug 30 2022)
 
 #### ⚠️ Pushed to `main`
