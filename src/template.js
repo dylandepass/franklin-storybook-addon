@@ -1,8 +1,7 @@
 
-import { HelixApp } from './helix-web-library.esm.js';
-
-function prepare(main, content, decorate, parameters) {
-  const { selector, index, sectionStyles, blockClasses } = parameters;
+function prepare(HelixApp, args, parameters, main, content, decorate) {
+  const { selector, index } = parameters;
+  const { sectionStyles, blockClasses } = args;
   const section = document.createElement('div');
   const parser = new DOMParser();
   const mydoc = parser.parseFromString(content, 'text/html');
@@ -31,22 +30,19 @@ function prepare(main, content, decorate, parameters) {
   return main;
 }
 
-export function Template(args, context, decorate) {
+export function Template(HelixApp, args, context, decorate) {
   const main = document.createElement('main');
   const { parameters } = context;
   const { path, host } = parameters;
-  console.log('con', context);
-  console.log('p', parameters);
-
   if (args.content) {
-    return prepare(main, args.content, decorate, parameters);
+    return prepare(HelixApp, args, parameters, main, args.content, decorate);
   } else {
     const url = `${host}${path}`;
     fetch(url).then(res => {
       res.text().then(htmlText => {
         const regex = new RegExp('./media', 'g');
         const element = htmlText.replace(regex, `${host}/media`);
-        return prepare(main, element, decorate, parameters);
+        return prepare(HelixApp, args, parameters, main, element, decorate);
       });
     });
   }

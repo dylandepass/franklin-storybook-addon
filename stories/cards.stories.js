@@ -1,8 +1,9 @@
-import { Template } from '/.storybook/template.js';
+import { Template } from '../src/template.js';
+import { HelixApp } from '/.storybook/helix-web-library.esm.js';
 import decorate from './cards.js';
 import style from './cards.css';
 
-export const Three = (args, context) => Template(args, context, decorate);
+export const Three = (args, context) => Template(HelixApp, args, context, decorate);
 
 Three.parameters = {
   path: '/storybook/cards.plain.html',
