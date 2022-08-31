@@ -1,5 +1,4 @@
-
-function prepare(HelixApp, args, parameters, main, content, decorate) {
+function prepare(HelixApp: any, args: any, parameters: any, main: any, content: any, decorate: any) {
   const { selector, index } = parameters;
   const { sectionStyles, blockClasses } = args;
   const section = document.createElement('div');
@@ -30,7 +29,7 @@ function prepare(HelixApp, args, parameters, main, content, decorate) {
   return main;
 }
 
-export function Template(HelixApp, args, context, decorate) {
+export function Template(HelixApp: any, args: any, context: any, decorate: any) {
   const main = document.createElement('main');
   const { parameters } = context;
   const { path, host } = parameters;
