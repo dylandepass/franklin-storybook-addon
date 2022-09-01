@@ -1,10 +1,9 @@
-function prepare(HelixApp: any, args: any, parameters: any, main: any, content: any, decorate: any) {
+function prepare(HelixApp: any, args: any, parameters: any, main: any, content: HTMLElement | Element, decorate: any) {
   const { selector, index } = parameters;
   const { sectionStyles, blockClasses } = args;
   const section = document.createElement('div');
-  const parser = new DOMParser();
-  const mydoc = parser.parseFromString(content, 'text/html');
-  const node = mydoc.querySelectorAll(selector).item(index);
+
+  const node = content.querySelectorAll(selector).item(index);
 
   main.appendChild(section);
   section.innerHTML = node.outerHTML;
@@ -30,18 +29,21 @@ function prepare(HelixApp: any, args: any, parameters: any, main: any, content: 
 }
 
 export function Template(HelixApp: any, args: any, context: any, decorate: any) {
+  const parser = new DOMParser();
   const main = document.createElement('main');
   const { parameters } = context;
   const { path, host } = parameters;
   if (args.content) {
-    return prepare(HelixApp, args, parameters, main, args.content, decorate);
+    const element = parser.parseFromString(args.content, 'text/html');
+    return prepare(HelixApp, args, parameters, main, element.body, decorate);
   } else {
     const url = `${host}${path}`;
     fetch(url).then(res => {
       res.text().then(htmlText => {
         const regex = new RegExp('./media', 'g');
-        const element = htmlText.replace(regex, `${host}/media`);
-        return prepare(HelixApp, args, parameters, main, element, decorate);
+        htmlText = htmlText.replace(regex, `${host}/media`);
+        const element = parser.parseFromString(htmlText, 'text/html');
+        return prepare(HelixApp, args, parameters, main, element.body, decorate);
       });
     });
   }

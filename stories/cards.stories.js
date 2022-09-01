@@ -1,17 +1,17 @@
-import { Template } from '../src/template.js';
-import { HelixApp } from '/.storybook/helix-web-library.esm.js';
+import { HelixApp } from '../.storybook/helix-web-library.esm.js';
+import { Template } from '../src/template';
 import decorate from './cards.js';
 import style from './cards.css';
 
 export const Three = (args, context) => Template(HelixApp, args, context, decorate);
+
+Three.storyName = 'Three Cards';
 
 Three.parameters = {
   path: '/storybook/cards.plain.html',
   selector: '.cards',
   index: 0
 }
-
-Three.storyName = 'Three Cards';
 
 /**
  * Default Config

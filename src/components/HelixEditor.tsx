@@ -47,7 +47,7 @@ export const HelixEditor: React.FC<HelixEditorProps> = () => {
                 })
                 .catch(err => console.log(err));
         }
-    }, [state.storiesHash]);
+    }, [path]);
 
     const onchange = (newContent: string) => {
         const div = document.createElement('div');

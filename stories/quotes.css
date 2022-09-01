@@ -1,0 +1,144 @@
+:root {
+  --color-black: #000;
+  --color-white: #fff;
+  --gradient-highlight-vertical: linear-gradient(15deg, #7c84fc, #ff4dd2);
+}
+
+.quotes-wrapper {
+  width: 100%;
+}
+
+main .quotes {
+  margin: 40px auto 0 auto;
+  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 40px 40px;
+}
+
+main .quotes .quote {
+  box-sizing: border-box;
+  border-radius: 20px;
+  margin: 0 auto;
+  background-color: #FFF;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+main .quotes .quote .content {
+  padding-top: 28px;
+  font-size: 1rem;
+  text-align: left;
+  flex-grow: 1;
+}
+
+main .quotes .quote .content::before {
+  content: "“";
+  display: block;
+  position: absolute;
+  margin-top: -50px;
+  width: 36px;
+  text-align: left;
+  font-size: 72px;
+  font-weight: 900;
+}
+
+main .quotes .quote .author {
+  display: flex;
+  margin-top: 16px;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  align-self: baseline;
+}
+
+main .quotes .quote .author hr {
+  display: none;
+}
+
+main .quotes .quote .author .image {
+  padding-right: 10px;
+}
+
+main .quotes .quote .author .image img {
+  width: 42px;
+  height: 42px;
+  max-width: unset;
+  border-radius: 21px;
+  box-sizing: border-box;
+}
+
+main .quotes .quote .author .summary p {
+  text-align: left;
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+main .quotes,
+main .quotes.highlight,
+main .quotes.dark {
+  margin-top: 40px;
+}
+
+main .section.quotes-container {
+  background: var(--color-white);
+}
+
+main .quotes.highlight {
+  background: var(--gradient-highlight-vertical);
+}
+
+main .quotes.dark {
+  background-color: var(--color-black);
+}
+
+main .quotes.inverted .quote {
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+
+
+main .section.quotes-container h2,
+main .section.quotes-container h3,
+main .section.quotes-container h4,
+main .section.quotes-container h5 {
+  color: var(--color-black);
+}
+
+main .quotes.highlight h2,
+main .quotes.highlight h3,
+main .quotes.highlight h4,
+main .quotes.highlight h5,
+main .quotes.dark h2,
+main .quotes.dark h3,
+main .quotes.dark h4,
+main .quotes.dark h5 {
+  color: var(--color-white);
+}
+
+
+@media (min-width: 900px) {
+  main .quotes {
+    flex-direction: row;
+    gap: 16px;
+    padding: 40px 40px;
+  }
+
+  main .quotes .quote {
+    flex: 1;
+  }
+}
+
+@media (min-width: 1200px) {
+
+  main .quotes,
+  main .quotes.highlight,
+  main .quotes.dark {
+    padding: 80px 80px;
+  }
+}

@@ -76,38 +76,33 @@ export function createTable(data: any, document: Document, blockClasses: string 
     data.forEach((row: any, index: number) => {
         const tr = document.createElement('tr');
         row.forEach((cell: any) => {
-            const t = document.createElement('td');
+            const td = document.createElement('td');
             if (index === 0) {
-                t.colSpan = maxColumns;
-                t.style.backgroundColor = TABLE_HEADING_BG_COLOR;
+                td.colSpan = maxColumns;
+                td.style.backgroundColor = TABLE_HEADING_BG_COLOR;
                 tr.style.height = "22.5pt";
                 const classes = cell.split(' ');
                 const blockName = classes.shift();
                 cell = `${blockName}${(blockClasses) ? ` (${blockClasses})` : ''}`;
             }
 
-            decorateTd(t);
+            decorateTd(td);
             if (typeof cell === 'string') {
-                t.innerHTML = cell;
+                td.innerHTML = cell;
             } else if (Array.isArray(cell)) {
                 cell.forEach((c) => {
-                    t.append(c);
+                    td.append(c);
                 });
             } else {
-                t.append(cell);
+                td.append(cell);
             }
-            tr.appendChild(t);
+            tr.appendChild(td);
             if (index === 1) {
                 colCount = row.length;
             }
         });
         table.appendChild(tr);
     });
-
-
-    const colGroup = document.createElement('colgroup');
-    colGroup.innerHTML = `<col><col><col>`;
-    table.prepend(colGroup);
 
     return table;
 }
@@ -159,7 +154,7 @@ export function convertBlocksToTables(element: HTMLElement, document: Document, 
         const divs = block.querySelectorAll(':scope > div');
         if (divs) {
             divs.forEach((div) => {
-                div.classList.add(blockClasses);
+                blockClasses && div.classList.add(blockClasses);
                 const subDivs = div.querySelectorAll(':scope > div');
                 if (subDivs && subDivs.length > 0) {
                     const rowData: any[] = [];
@@ -184,10 +179,9 @@ export function convertBlocksToTables(element: HTMLElement, document: Document, 
     });
 }
 
-export function convertTablesToBlocks(element: HTMLElement, document: Document) {
+export function convertTablesToBlocks(element: HTMLElement, document: Document): string {
+    const wrapperDiv = document.createElement('div');
     element.querySelectorAll('table').forEach((table) => {
-        const wrapperDiv = document.createElement('div');
-        wrapperDiv.classList.add('wrap');
         table.querySelectorAll('tr:not(:first-of-type)').forEach((row, index) => {
             const rowDiv = document.createElement('div');
             row.querySelectorAll('td').forEach((col) => {
@@ -207,8 +201,9 @@ export function convertTablesToBlocks(element: HTMLElement, document: Document) 
             });
             wrapperDiv.appendChild(rowDiv);
         });
-        table.replaceWith(wrapperDiv.firstChild);
+        table.parentElement.insertAdjacentHTML('afterbegin', wrapperDiv.innerHTML);
+        table.remove();
     });
-
-    return (element.firstChild as HTMLElement).innerHTML;
+    // Remove wrapped divs from RTE editor
+    return element.querySelector('div > div > div').outerHTML;
 }

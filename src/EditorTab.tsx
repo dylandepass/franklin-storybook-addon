@@ -6,5 +6,5 @@ interface TabProps {
 }
 
 export const EditorTab: React.FC<TabProps> = ({ active }) => {
-  return active ? <HelixEditor /> : null;
+  return active ? <HelixEditor key="editor" /> : null;
 };
