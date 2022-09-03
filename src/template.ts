@@ -1,3 +1,25 @@
+/*
+ * Copyright 2022 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+/**
+ * Prepares and decorates the blocks to be rendered in storybook
+ * @param HelixApp The helix-web-library used by the story, this is used to create sections
+ * @param args The storybook args
+ * @param parameters The story parameters
+ * @param main The main container for the decorated content
+ * @param content The content element to be decorated
+ * @param decorate The decorate method for the block used in the storybook
+ * @returns A fully decorated element for rendering in storybook
+ */
 function prepare(HelixApp: any, args: any, parameters: any, main: any, content: HTMLElement | Element, decorate: any) {
   const { selector, index } = parameters;
   const { sectionStyles, blockClasses } = args;
@@ -28,6 +50,14 @@ function prepare(HelixApp: any, args: any, parameters: any, main: any, content: 
   return main;
 }
 
+/**
+ * Prepares the blocks to be rendered in storybook 
+ * @param HelixApp The helix-web-library used by the story, this is used to create sections
+ * @param args The storybook args
+ * @param context The storybook context
+ * @param decorate The decorate method of the component
+ * @returns A fully decorated element for rendering in storybook
+ */
 export function Template(HelixApp: any, args: any, context: any, decorate: any) {
   const parser = new DOMParser();
   const main = document.createElement('main');

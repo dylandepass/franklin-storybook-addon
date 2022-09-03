@@ -1,21 +1,33 @@
+/*
+ * Copyright 2022 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 
 import React, { useState, useRef, useEffect } from 'react';
 import JoditEditor from "jodit-react";
-import { convertBlocksToTables, createSectionMetadata, convertTablesToBlocks } from "./DomUtils";
 import { useStorybookState, useParameter, useArgs } from '@storybook/api';
+import { convertBlocksToTables, createSectionMetadata, convertTablesToBlocks } from "./DomUtils";
 
-interface HelixEditorProps { }
-
-export const HelixEditor: React.FC<HelixEditorProps> = () => {
+/**
+ * Rich text editor for rendering and updated content for helix. 
+ */
+export const HelixEditor: React.FC = () => {
     const editor = useRef(null)
     const [content, setContent] = useState('');
     const [config, setConfig] = useState({});
-    const state = useStorybookState();
     const [_, updateArgs] = useArgs();
     const host = useParameter('host', undefined);
     const path = useParameter('path', undefined);
     const selector = useParameter('selector', undefined);
     const index = useParameter('index', 0);
+    const state = useStorybookState();
 
     useEffect(() => {
         if (host && path) {
@@ -24,35 +36,40 @@ export const HelixEditor: React.FC<HelixEditorProps> = () => {
                 .then(res => {
                     const config = {
                         readonly: false,
-                        buttons: ['bold', 'italic', 'underline', 'paragraph', '|', 'ul', 'li', 'table', '|', 'selectall', 'copy', 'source'],
+                        buttons: ['bold', 'italic', 'underline', 'paragraph', 'image', '|', 'ul', 'li', 'table', '|', 'selectall', 'copy', 'source'],
                         toolbarAdaptive: false,
                         zIndex: -1
                     }
-                    setConfig(config);
+
+                    // Fix relative images to absolute
                     const regex = new RegExp('./media', 'g');
                     const contentHTML = res.replace(regex, `${host}/media`);
+
+                    // Prepare content for rendering in jodit
                     const div = document.createElement('div');
                     div.innerHTML = contentHTML;
 
-                    const node = div.querySelectorAll(selector).item(index);
+                    // Query for target block and index
+                    if (selector) {
+                        const node = div.querySelectorAll(selector).item(index ?? 0);
+                        div.innerHTML = node.outerHTML;
+                    }
 
-                    div.innerHTML = `<div>${node.outerHTML}</div>`;
+                    // Fetch active story
                     const story = state.storiesHash[state.storyId] as any;
-                    convertBlocksToTables(div.firstElementChild as HTMLDivElement, document, story.args.blockClasses);
-                    createSectionMetadata(div.firstElementChild as HTMLDivElement, document, story);
-
-                    div.style.width = "585px";
-                    div.style.margin = "0 auto";
+                    convertBlocksToTables(div, story.args.blockClasses);
+                    createSectionMetadata(div, story);
                     setContent(div.outerHTML);
+                    setConfig(config);
                 })
                 .catch(err => console.log(err));
         }
     }, [path]);
 
-    const onchange = (newContent: string) => {
+    function onChange(newContent: string) {
         const div = document.createElement('div');
         div.innerHTML = newContent;
-        const res = convertTablesToBlocks(div, document);
+        const res = convertTablesToBlocks(div);
         updateArgs({ 'content': res });
     }
 
@@ -61,7 +78,7 @@ export const HelixEditor: React.FC<HelixEditorProps> = () => {
             ref={editor}
             value={content}
             config={config}
-            onChange={onchange}
+            onChange={onChange}
         />
     );
 }

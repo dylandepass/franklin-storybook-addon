@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Adobe. All rights reserved.
+ * Copyright 2022 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,8 +15,18 @@ const CELL_PADDING = 20;
 const CELL_BORDER_WIDTH = 1;
 const CELL_TOTAL_PADDING = (CELL_PADDING * 2) + (CELL_BORDER_WIDTH * 2);
 const TABLE_HEADING_BG_COLOR = '#d9ead3';
+const TABLE_WRAPPER_WIDTH = 585;
+const TABLE_WRAPPER_MARGIN = '0 auto';
 
-function calculateAspectRatioFit(width: number, height: number, maxWidth: number, maxHeight: number) {
+/**
+ * Calculates the final width/height based on the original aspect ratio and the desired max width/height 
+ * @param width The original image width
+ * @param height The original image height
+ * @param maxWidth The max target width
+ * @param maxHeight The max target height
+ * @returns 
+ */
+function calculateAspectRatioFit(width: number, height: number, maxWidth: number, maxHeight: number): number[] {
     if (width > height) {
         if (width > maxWidth) {
             height = height * (maxWidth / width);
@@ -32,24 +42,38 @@ function calculateAspectRatioFit(width: number, height: number, maxWidth: number
     return [width, height];
 }
 
-function decorateImg(img: HTMLImageElement, colCount: number) {
+/**
+ * Decorate an image for rendering in table in an RTE
+ * @param img The image to decorate
+ * @param colCount Used to calculate the max-width of the image
+ */
+function decorateTableImg(img: HTMLImageElement, colCount: number) {
     const url = new URL(img.src);
     const maxWidth = (PAGE_WIDTH - CELL_TOTAL_PADDING) / colCount;
+
+    // Resize the image to fit the column
     const size = calculateAspectRatioFit(img.width, img.height, maxWidth, maxWidth);
+
+    // Keep track of the original img size
     img.setAttribute('data-og-width', img.width.toString());
     img.setAttribute('data-og-height', img.height.toString());
+
+    // Set new image dimensions
     img.width = size[0];
     img.height = size[1];
     img.style.marginLeft = "0";
     img.style.marginTop = "0";
 
-    img.parentElement.parentElement.style.marginTop = '0px';
-    img.parentElement.parentElement.style.lineHeight = '1.656pt';
-    img.parentElement.parentElement.dir = 'ltr';
-
     img.parentElement.replaceWith(img);
+
+    // Remove top margin surrounding image (p)..
+    img.parentElement.style.marginTop = '0px';
 }
 
+/**
+ * Decorate a table column for rendering in a RTE
+ * @param td The column
+ */
 function decorateTd(td: HTMLTableCellElement) {
     td.style.verticalAlign = 'top';
     td.style.padding = "5px 5px 5px 5px";
@@ -61,15 +85,23 @@ function decorateTd(td: HTMLTableCellElement) {
     td.style.marginBottom = "0";
     td.style.width = "33%";
 }
-
+/**
+ * Decorate a table for rendering in a RTE
+ * @param table The table
+ */
 function decorateTable(table: HTMLTableElement) {
     table.style.border = 'none';
     table.style.borderCollapse = 'none';
     table.style.width = '100%';
 }
 
-export function createTable(data: any, document: Document, blockClasses: string = '') {
-    let colCount = 0;
+/**
+ * Create a table for rendering in an RTE
+ * @param data The table data
+ * @param blockClasses Block classes
+ * @returns Table
+ */
+export function createTable(data: any, blockClasses: string = '') {
     const table = document.createElement('table');
     decorateTable(table);
     const maxColumns = data.length > 1 ? data[1].length : 1;
@@ -77,6 +109,8 @@ export function createTable(data: any, document: Document, blockClasses: string 
         const tr = document.createElement('tr');
         row.forEach((cell: any) => {
             const td = document.createElement('td');
+
+            // The first column should be the block name row
             if (index === 0) {
                 td.colSpan = maxColumns;
                 td.style.backgroundColor = TABLE_HEADING_BG_COLOR;
@@ -97,9 +131,6 @@ export function createTable(data: any, document: Document, blockClasses: string 
                 td.append(cell);
             }
             tr.appendChild(td);
-            if (index === 1) {
-                colCount = row.length;
-            }
         });
         table.appendChild(tr);
     });
@@ -107,13 +138,23 @@ export function createTable(data: any, document: Document, blockClasses: string 
     return table;
 }
 
-export function computeBlockName(str: string) {
-    return str
+/**
+ * Determine the block name from the serialized name from pipeline
+ * @param str The block name returned by the pipeline
+ * @returns The actual block name
+ */
+export function computeBlockName(name: string) {
+    return name
         .replace(/\s(.)/g, (s) => s.toUpperCase())
         .replace(/^(.)/g, (s) => s.toUpperCase());
 }
 
-export function createSectionMetadata(element: HTMLElement, document: Document, story: any) {
+/**
+ * Creates a section metadata table
+ * @param element 
+ * @param story 
+ */
+export function createSectionMetadata(element: HTMLElement, story: any) {
     const data = [['section-metadata']];
     const sectionStyle = story.args.sectionStyles;
     if (sectionStyle) {
@@ -142,12 +183,19 @@ export function createSectionMetadata(element: HTMLElement, document: Document, 
     }
 
     if (data.length > 1) {
-        const metadataTable = createTable(data, document);
+        const metadataTable = createTable(data);
         element.prepend(metadataTable);
     }
 }
 
-export function convertBlocksToTables(element: HTMLElement, document: Document, blockClasses: string) {
+/**
+ * Converts a block (div) returned by the pipeline into a table for rendering in an RTE
+ * @param element The main element that contains the divs that need to be converted to tables
+ * @param blockClasses Block classes to add to the block name (first row)
+ */
+export function convertBlocksToTables(element: HTMLElement, blockClasses: string) {
+    element.style.width = `${TABLE_WRAPPER_WIDTH}px`;
+    element.style.margin = TABLE_WRAPPER_MARGIN;
     element.querySelectorAll('div[class]').forEach((block) => {
         const name = computeBlockName(block.className);
         const data = [[name]];
@@ -161,7 +209,7 @@ export function convertBlocksToTables(element: HTMLElement, document: Document, 
                     subDivs.forEach((cell) => {
                         if (cell.nodeName === 'DIV') {
                             const imgs = cell.querySelectorAll('img');
-                            imgs.forEach((img) => decorateImg(img, subDivs.length));
+                            imgs.forEach((img) => decorateTableImg(img, subDivs.length));
                             const cellContent: any[] = [];
                             Array.from(cell.childNodes).forEach((c) => cellContent.push(c));
                             rowData.push(cellContent);
@@ -173,13 +221,18 @@ export function convertBlocksToTables(element: HTMLElement, document: Document, 
                 }
             });
         }
-        const table = createTable(data, document, blockClasses);
+        const table = createTable(data, blockClasses);
         block.innerHTML = '';
         block.appendChild(table);
     });
 }
 
-export function convertTablesToBlocks(element: HTMLElement, document: Document): string {
+/**
+ * Converts tables to div element similar to how to the pipeline returns tables 
+ * @param element The element containing the tables
+ * @returns The element with all child tables converted to divs
+ */
+export function convertTablesToBlocks(element: HTMLElement): string {
     const wrapperDiv = document.createElement('div');
     element.querySelectorAll('table').forEach((table) => {
         table.querySelectorAll('tr:not(:first-of-type)').forEach((row, index) => {
@@ -204,6 +257,6 @@ export function convertTablesToBlocks(element: HTMLElement, document: Document):
         table.parentElement.insertAdjacentHTML('afterbegin', wrapperDiv.innerHTML);
         table.remove();
     });
-    // Remove wrapped divs from RTE editor
-    return element.querySelector('div > div > div').outerHTML;
+    // Remove wrapped divs from Rich Text editor
+    return element.querySelector('div > div').outerHTML;
 }
