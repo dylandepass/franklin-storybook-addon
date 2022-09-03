@@ -1,3 +1,15 @@
+# v0.0.11 (Fri Sep 02 2022)
+
+#### ⚠️ Pushed to `main`
+
+- fix: code cleanup ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.10 (Thu Sep 01 2022)
 
 #### ⚠️ Pushed to `main`
