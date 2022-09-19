@@ -1,6 +1,6 @@
 {
   "name": "@dylandepass/helix-storybook-addon",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "A storybook addon for building Helix blocks.",
   "keywords": [
     "Helix",
