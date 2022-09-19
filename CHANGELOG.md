@@ -1,3 +1,15 @@
+# v0.0.12 (Mon Sep 19 2022)
+
+#### ⚠️ Pushed to `main`
+
+- fix: support both class and instance for HelixApp ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.11 (Fri Sep 02 2022)
 
 #### ⚠️ Pushed to `main`
