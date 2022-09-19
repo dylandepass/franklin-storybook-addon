@@ -39,13 +39,21 @@ function prepare(HelixApp: any, args: any, parameters: any, main: any, content: 
 
   decorate(section.firstElementChild);
 
-  HelixApp.init({
-    rumEnabled: true,
-    enableBlockLoader: false,
-    loadHeader: false,
-    loadFooter: false
-  })
-    .decorate();
+  if(typeof HelixApp.init === 'function') {
+    HelixApp.init({
+      rumEnabled: false,
+      enableBlockLoader: false,
+      loadHeader: false,
+      loadFooter: false
+    })
+      .decorate();
+  }else {
+    HelixApp.config.rumEnabled = false;
+    HelixApp.config.enableBlockLoader = false;
+    HelixApp.config.loadHeader = false;
+    HelixApp.config.loadFooter = false;
+    HelixApp.decorate();
+  }
 
   return main;
 }
