@@ -37,8 +37,6 @@ function prepare(HelixApp: any, args: any, parameters: any, main: any, content: 
     section.firstElementChild.classList.add(blockClasses);
   }
 
-  decorate(section.firstElementChild);
-
   if(typeof HelixApp.init === 'function') {
     HelixApp.init({
       rumEnabled: false,
@@ -54,6 +52,19 @@ function prepare(HelixApp: any, args: any, parameters: any, main: any, content: 
     HelixApp.config.loadFooter = false;
     HelixApp.decorate();
   }
+  
+  if(decorate) {
+    decorate(section.querySelector('.block'));
+  }
+
+  // Block loader is disabled, set loaded incase site sets in override
+  main.querySelectorAll('.section[data-section-status="initialized"]').forEach((section:HTMLDivElement) => {
+    section.setAttribute('data-section-status', 'loaded');
+  });
+
+  main.querySelectorAll('.block[data-block-status="initialized"]').forEach((block:HTMLDivElement) => {
+    block.setAttribute('data-block-status', 'loaded');
+  });
 
   return main;
 }
