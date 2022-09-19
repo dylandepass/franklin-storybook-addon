@@ -1,3 +1,15 @@
+# v0.0.13 (Mon Sep 19 2022)
+
+#### ⚠️ Pushed to `main`
+
+- fix: move local decorate after page decorate ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.12 (Mon Sep 19 2022)
 
 #### ⚠️ Pushed to `main`
