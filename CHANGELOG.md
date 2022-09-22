@@ -1,3 +1,15 @@
+# v0.0.15 (Thu Sep 22 2022)
+
+#### ⚠️ Pushed to `main`
+
+- fix: colspan ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.14 (Wed Sep 21 2022)
 
 #### ⚠️ Pushed to `main`
