@@ -1,3 +1,15 @@
+# v0.0.21 (Thu Sep 22 2022)
+
+#### ⚠️ Pushed to `main`
+
+- fix: reset updated sooner ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.20 (Thu Sep 22 2022)
 
 #### ⚠️ Pushed to `main`
