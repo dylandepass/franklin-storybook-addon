@@ -46,12 +46,12 @@
     "@babel/preset-react": "^7.12.5",
     "@babel/preset-typescript": "^7.13.0",
     "@storybook/addon-essentials": "^6.5.8",
-    "@storybook/cli": "^6.5.10",
-    "@storybook/html": "^6.5.9",
     "@storybook/addons": "^6.5.8",
     "@storybook/api": "^6.5.8",
+    "@storybook/cli": "^6.5.10",
     "@storybook/components": "^6.5.8",
     "@storybook/core-events": "^6.5.8",
+    "@storybook/html": "^6.5.9",
     "@storybook/theming": "^6.5.8",
     "@types/react": "^18.0.17",
     "auto": "^10.3.0",
@@ -78,6 +78,7 @@
     "icon": "https://repository-images.githubusercontent.com/175655852/8dd80780-808d-11e9-81de-f8976021680a"
   },
   "dependencies": {
+    "@dylandepass/franklin-web-library": "^1.13.2",
     "jodit-react": "^1.3.14"
   }
 }

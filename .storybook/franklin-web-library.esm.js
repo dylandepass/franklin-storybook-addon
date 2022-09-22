@@ -73,7 +73,7 @@ function decorateBlocks(main) {
  */
 function toClassName(name) {
   return name && typeof name === 'string'
-    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-')
+    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
     : '';
 }
 
@@ -448,15 +448,33 @@ async function loadBlock(block, eager = false) {
   if (!(block.getAttribute('data-block-status') === 'loading' || block.getAttribute('data-block-status') === 'loaded')) {
     block.setAttribute('data-block-status', 'loading');
     const blockName = block.getAttribute('data-block-name');
+
+    let cssPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`;
+    let jsPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
+
+    if (window.hlx.experiment && window.hlx.experiment.run) {
+      const { experiment } = window.hlx;
+      if (experiment.selectedVariant !== 'control') {
+        const { control } = experiment.variants;
+        if (control && control.blocks && control.blocks.includes(blockName)) {
+          const blockIndex = control.blocks.indexOf(blockName);
+          const variant = experiment.variants[experiment.selectedVariant];
+          const blockPath = variant.blocks[blockIndex];
+          cssPath = `${window.hlx.codeBasePath}/experiments/${experiment.id}/${blockPath}/${blockName}.css`;
+          jsPath = `${window.hlx.codeBasePath}/experiments/${experiment.id}/${blockPath}/${blockName}.js`;
+        }
+      }
+    }
+
     if (blockName) {
       try {
         const cssLoaded = new Promise((resolve) => {
-          loadCSS(`/blocks/${blockName}/${blockName}.css`, resolve);
+          loadCSS(cssPath, resolve);
         });
         const decorationComplete = new Promise((resolve) => {
           (async () => {
             try {
-              const mod = await import(`${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`);
+              const mod = await import(jsPath);
               if (mod.default) {
                 await mod.default(block, blockName, document, eager);
               }
@@ -624,9 +642,10 @@ async function fetchPlaceholders(prefix = 'default') {
  * log RUM if part of the sample.
  * @param {string} checkpoint identifies the checkpoint in funnel
  * @param {Object} data additional data for RUM sample
+ * @param {string} generation additional data for RUM sample
  * @preserve Exclude from terser
  */
-function sampleRUM(checkpoint, generation, data = {}) {
+function sampleRUM(checkpoint, data = {}, generation = '') {
   sampleRUM.defer = sampleRUM.defer || [];
   const defer = (fnname) => {
     sampleRUM[fnname] = sampleRUM[fnname]
@@ -690,7 +709,7 @@ function sampleRUM(checkpoint, generation, data = {}) {
 }
 
 /*
- * Copyright 2021 Adobe. All rights reserved.
+ * Copyright 2022 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -726,6 +745,16 @@ function registerPerformanceLogger() {
     });
     pols.observe({ type: 'layout-shift', buffered: true });
 
+    const polt = new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        // Log the entry and all associated details.
+        stamp(JSON.stringify(entry));
+      }
+    });
+
+    // Start listening for `longtask` entries to be dispatched.
+    polt.observe({ type: 'longtask', buffered: true });
+
     const pores = new PerformanceObserver((entryList) => {
       const entries = entryList.getEntries();
       entries.forEach((entry) => {
@@ -751,8 +780,288 @@ function registerPerformanceLogger() {
  * governing permissions and limitations under the License.
  */
 
+function checkTesting() {
+  const tesing = getMetadata('testing');
+  return (tesing && tesing.toLowerCase() === 'on');
+}
+
 /**
- * Initializes helix
+ * this is an extensible stub to take on audience mappings
+ * @param {string} audience
+ * @return {boolean} is member of this audience
+ */
+
+function checkExperimentAudience(audience) {
+  if (audience === 'mobile') {
+    return window.innerWidth < 600;
+  }
+  if (audience === 'desktop') {
+    return window.innerWidth > 600;
+  }
+  return true;
+}
+
+/**
+ * Replaces element with content from path
+ * @param {string} path
+ * @param {HTMLElement} element
+ */
+async function replaceInner(path, element) {
+  const plainPath = `${path}.plain.html`;
+  try {
+    const resp = await fetch(plainPath);
+    const html = await resp.text();
+    element.innerHTML = html;
+  } catch (e) {
+    console.log(`error loading content: ${plainPath}`, e);
+  }
+  return null;
+}
+
+/**
+ * gets the variant id that this visitor has been assigned to if any
+ * @param {string} experimentId
+ * @return {string} assigned variant or empty string if none set
+ */
+
+function getLastExperimentVariant(experimentId) {
+  console.log('get last experiment', experimentId);
+  const experimentsStr = localStorage.getItem('hlx-experiments');
+  if (experimentsStr) {
+    const experiments = JSON.parse(experimentsStr);
+    if (experiments[experimentId]) {
+      return experiments[experimentId].variant;
+    }
+  }
+  return '';
+}
+
+/**
+ * sets/updates the variant id that is assigned to this visitor,
+ * also cleans up old variant ids
+ * @param {string} experimentId
+ * @param {variant} variant
+ */
+
+function setLastExperimentVariant(experimentId, variant) {
+  const experimentsStr = localStorage.getItem('hlx-experiments');
+  const experiments = experimentsStr ? JSON.parse(experimentsStr) : {};
+
+  const now = new Date();
+  const expKeys = Object.keys(experiments);
+  expKeys.forEach((key) => {
+    const date = new Date(experiments[key].date);
+    if (now - date > (1000 * 86400 * 30)) {
+      delete experiments[key];
+    }
+  });
+  const [date] = now.toISOString().split('T');
+
+  experiments[experimentId] = { variant, date };
+  localStorage.setItem('hlx-experiments', JSON.stringify(experiments));
+}
+
+/**
+ * Gets the experiment name, if any for the page based on env, useragent, query params
+ * @returns {string} experimentid
+ */
+function getExperiment() {
+  let experiment = toClassName(getMetadata('experiment'));
+
+  // if (!window.location.host.includes('adobe.com')
+  // && !window.location.host.includes('.hlx.live')) {
+  //  experiment = '';
+  //  // reason = 'not prod host';
+  // }
+  if (window.location.hash) {
+    experiment = '';
+    // reason = 'suppressed by #';
+  }
+
+  if (navigator.userAgent.match(/bot|crawl|spider/i)) {
+    experiment = '';
+    // reason = 'bot detected';
+  }
+
+  const usp = new URLSearchParams(window.location.search);
+  if (usp.has('experiment')) {
+    [experiment] = usp.get('experiment').split('/');
+  }
+
+  return experiment;
+}
+
+/**
+ * Gets experiment config from the manifest or the instant experiement
+ * metdata and transforms it to more easily consumable structure.
+ *
+ * the manifest consists of two sheets "settings" and "experiences"
+ *
+ * "settings" is applicable to the entire test and contains information
+ * like "Audience", "Status" or "Blocks".
+ *
+ * "experience" hosts the experiences in columns, consisting of:
+ * a "Percentage Split", "Label" and a set of "Pages".
+ *
+ *
+ * @param {string} experimentId
+ * @returns {object} containing the experiment manifest
+ */
+async function getExperimentConfig(experimentId) {
+  const instantExperiment = getMetadata('instant-experiment');
+  if (instantExperiment) {
+    const config = {
+      experimentName: `Instant Experiment: ${experimentId}`,
+      audience: '',
+      status: 'Active',
+      id: experimentId,
+      variants: {},
+      variantNames: [],
+    };
+
+    const pages = instantExperiment.split(',').map((p) => new URL(p.trim()).pathname);
+    const evenSplit = 1 / (pages.length + 1);
+
+    config.variantNames.push('control');
+    config.variants.control = {
+      percentageSplit: '',
+      pages: [window.location.pathname],
+      blocks: [],
+      label: 'Control',
+    };
+
+    pages.forEach((page, i) => {
+      const vname = `challenger-${i + 1}`;
+      config.variantNames.push(vname);
+      config.variants[vname] = {
+        percentageSplit: `${evenSplit}`,
+        pages: [page],
+        label: `Challenger ${i + 1}`,
+      };
+    });
+
+    return (config);
+  } else {
+    const path = `/express/experiments/${experimentId}/manifest.json`;
+    try {
+      const config = {};
+      const resp = await fetch(path);
+      const json = await resp.json();
+      json.settings.data.forEach((line) => {
+        const key = toCamelCase(line.Name);
+        config[key] = line.Value;
+      });
+      config.id = experimentId;
+      config.manifest = path;
+      const variants = {};
+      let variantNames = Object.keys(json.experiences.data[0]);
+      variantNames.shift();
+      variantNames = variantNames.map((vn) => toCamelCase(vn));
+      variantNames.forEach((variantName) => {
+        variants[variantName] = {};
+      });
+      let lastKey = 'default';
+      json.experiences.data.forEach((line) => {
+        let key = toCamelCase(line.Name);
+        if (!key) key = lastKey;
+        lastKey = key;
+        const vns = Object.keys(line);
+        vns.shift();
+        vns.forEach((vn) => {
+          const camelVN = toCamelCase(vn);
+          if (key === 'pages' || key === 'blocks') {
+            variants[camelVN][key] = variants[camelVN][key] || [];
+            if (key === 'pages') variants[camelVN][key].push(new URL(line[vn]).pathname);
+            else variants[camelVN][key].push(line[vn]);
+          } else {
+            variants[camelVN][key] = line[vn];
+          }
+        });
+      });
+      config.variants = variants;
+      config.variantNames = variantNames;
+      console.log(config);
+      return config;
+    } catch (e) {
+      console.log(`error loading experiment manifest: ${path}`, e);
+    }
+    return null;
+  }
+}
+
+/**
+ * checks if a test is active on this page and if so executes the test
+ */
+async function decorateTesting() {
+  try {
+    // let reason = '';
+    const usp = new URLSearchParams(window.location.search);
+    const experiment = getExperiment();
+    const [forcedExperiment, forcedVariant] = usp.get('experiment') ? usp.get('experiment').split('/') : [];
+
+    if (experiment) {
+      console.log('experiment', experiment);
+      const config = await getExperimentConfig(experiment);
+      console.log(config);
+      if (toCamelCase(config.status) === 'active' || forcedExperiment) {
+        config.run = forcedExperiment || checkExperimentAudience(toClassName(config.audience));
+        console.log('run', config.run, config.audience);
+
+        window.hlx = window.hlx || {};
+        window.hlx.experiment = config;
+        if (config.run) {
+          const forced = forcedVariant || getLastExperimentVariant(config.id);
+          if (forced && config.variantNames.includes(forced)) {
+            config.selectedVariant = forced;
+          } else {
+            let random = Math.random();
+            let i = config.variantNames.length;
+            while (random > 0 && i > 0) {
+              i -= 1;
+              console.log(random, i);
+              random -= +config.variants[config.variantNames[i]].percentageSplit;
+            }
+            config.selectedVariant = config.variantNames[i];
+          }
+          setLastExperimentVariant(config.id, config.selectedVariant);
+          sampleRUM('experiment', { source: config.id, target: config.selectedVariant });
+          console.log(`running experiment (${window.hlx.experiment.id}) -> ${window.hlx.experiment.selectedVariant}`);
+          if (config.selectedVariant !== 'control') {
+            const currentPath = window.location.pathname;
+            const pageIndex = config.variants.control.pages.indexOf(currentPath);
+            console.log(pageIndex, config.variants.control.pages, currentPath);
+            if (pageIndex >= 0) {
+              const page = config.variants[config.selectedVariant].pages[pageIndex];
+              if (page) {
+                const experimentPath = new URL(page, window.location.href).pathname.split('.')[0];
+                if (experimentPath && experimentPath !== currentPath) {
+                  await replaceInner(experimentPath, document.querySelector('main'));
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  } catch (e) {
+    console.log('error testing', e);
+  }
+}
+
+/*
+ * Copyright 2022 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+/**
+ * Initializes franklin
  * @preserve Exclude from terser
  */
 function initHlx() {
@@ -788,7 +1097,7 @@ function addPublishDependencies(url) {
 }
 
 /*
- * Copyright 2021 Adobe. All rights reserved.
+ * Copyright 2022 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -806,6 +1115,7 @@ const defaultConfig = {
   enableBlockLoader: true,
   loadHeader: true,
   loadFooter: true,
+  experimentsEnabled: false,
 };
 
 /**
@@ -822,9 +1132,10 @@ const defaultConfig = {
  * @property {boolean} enableBlockLoader
  * @property {boolean} loadHeader
  * @property {boolean} loadFooter
+ * @property {boolean} experimentsEnabled
  */
 
-class HelixApp {
+class Franklin {
   /** @param {AppConfig} config */
   constructor(config = defaultConfig) {
     this.config = config;
@@ -847,7 +1158,7 @@ class HelixApp {
   }
 
   static init(config) {
-    return new HelixApp(config);
+    return new Franklin(config);
   }
 
   /**
@@ -863,6 +1174,14 @@ class HelixApp {
    */
   withLoadLazy(override) {
     this.loadLazyHook = override;
+    return this;
+  }
+
+  /**
+   * Hook direct after block decoration and before waitForLCP.
+   */
+  withDecorateMain(hook) {
+    this.decorateMainHook = hook;
     return this;
   }
 
@@ -931,14 +1250,6 @@ class HelixApp {
   }
 
   /**
-   * Hook direct after block decoration and before waitForLCP.
-   */
-  withPostDecorateBlockHook(hook) {
-    this.postDecorateBlockHook = hook;
-    return this;
-  }
-
-  /**
    * Decorate the page
    */
   async decorate() {
@@ -969,11 +1280,10 @@ class HelixApp {
     this.buildAutoBlocks(main);
     this.decorateSections(main);
     this.decorateBlocks(main);
-    if (this.postDecorateBlockHook) {
-      this.postDecorateBlockHook(main);
+
+    if (this.decorateMainHook) {
+      this.decorateMainHook(main);
     }
-    sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
-    window.setTimeout(() => sampleRUM.observe(main.querySelectorAll('picture > img')), 1000);
   }
 
   /**
@@ -983,7 +1293,7 @@ class HelixApp {
    * @preserve Exclude from terser
    */
   sampleRUM(event, data = {}) {
-    sampleRUM(event, this.config.rumGeneration, data);
+    sampleRUM(event, data, this.config.rumGeneration);
   }
 
   /**
@@ -1034,11 +1344,17 @@ class HelixApp {
       loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
     }
 
+    if (this.config.experimentsEnabled ?? defaultConfig.experimentsEnabled) {
+      if (!window.hlx.lighthouse) decorateTesting();
+    }
+
     addFavIcon(`${window.hlx.codeBasePath}${this.config.favIcon ?? defaultConfig.favIcon}`);
     if (this.loadLazyHook) {
       this.loadLazyHook(doc);
     }
     sampleRUM('lazy');
+    sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
+    sampleRUM.observe(main.querySelectorAll('picture > img'));
   }
 
   /**
@@ -1083,8 +1399,8 @@ class HelixApp {
    * @param {Element} block The block element
    * @preserve Exclude from terser
    */
-  decorateBlock(main) {
-    decorateBlock(main);
+  decorateBlock(block) {
+    decorateBlock(block);
   }
 
   /**
@@ -1114,4 +1430,4 @@ class HelixApp {
   }
 }
 
-export { HelixApp, addFavIcon, addPublishDependencies, buildBlock, createOptimizedPicture, decorateBlock, decorateBlocks, decorateButtons, decorateIcons, decorateSections, decorateTemplateAndTheme, fetchPlaceholders, getMetadata, getOptimizedImagePath, initHlx, loadBlock, loadBlocks, loadCSS, loadFooter, loadHeader, loadScript, normalizeHeadings, readBlockConfig, registerPerformanceLogger, removeStylingFromImages, sampleRUM, stamp, toCamelCase, toClassName, updateSectionsStatus, waitForLCP };
+export { Franklin, addFavIcon, addPublishDependencies, buildBlock, checkTesting, createOptimizedPicture, decorateBlock, decorateBlocks, decorateButtons, decorateIcons, decorateSections, decorateTemplateAndTheme, decorateTesting, fetchPlaceholders, getExperiment, getExperimentConfig, getMetadata, getOptimizedImagePath, initHlx, loadBlock, loadBlocks, loadCSS, loadFooter, loadHeader, loadScript, normalizeHeadings, readBlockConfig, registerPerformanceLogger, removeStylingFromImages, replaceInner, sampleRUM, stamp, toCamelCase, toClassName, updateSectionsStatus, waitForLCP };
