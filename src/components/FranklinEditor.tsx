@@ -65,7 +65,7 @@ export const FranklinEditor: React.FC = () => {
                 })
                 .catch(err => console.log(err));
         }
-    }, [path]);
+    }, [path, selector, index]);
 
     function onChange(newContent: string) {
         if(updated) {
