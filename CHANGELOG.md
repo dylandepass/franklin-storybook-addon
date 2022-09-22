@@ -1,3 +1,15 @@
+# v0.0.20 (Thu Sep 22 2022)
+
+#### ⚠️ Pushed to `main`
+
+- fix: reset updated when new story loaded ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.19 (Thu Sep 22 2022)
 
 #### ⚠️ Pushed to `main`
