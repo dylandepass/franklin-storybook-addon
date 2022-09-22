@@ -1,3 +1,15 @@
+# v0.0.14 (Wed Sep 21 2022)
+
+#### ⚠️ Pushed to `main`
+
+- fix: only update args on content change ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.13 (Mon Sep 19 2022)
 
 #### ⚠️ Pushed to `main`
