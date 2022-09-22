@@ -35,6 +35,7 @@ export const FranklinEditor: React.FC = () => {
             fetch(`${host}${path}`)
                 .then(res => res.text())
                 .then(res => {
+                    setUpdated(false);
                     const config = {
                         readonly: false,
                         buttons: ['bold', 'italic', 'underline', 'paragraph', 'image', '|', 'ul', 'li', 'table', '|', 'selectall', 'copy', 'source'],
@@ -62,7 +63,6 @@ export const FranklinEditor: React.FC = () => {
                     createSectionMetadata(div, story);
                     setContent(div.outerHTML);
                     setConfig(config);
-                    setUpdated(false);
                 })
                 .catch(err => console.log(err));
         }
