@@ -1,5 +1,5 @@
-# Storybook Addon Helix Storybook Addon
-A storybook addon for working with Helix projects.
+# Storybook Addon Franklin Storybook Addon
+A storybook addon for working with Franklin projects.
 
 ### Development scripts
 

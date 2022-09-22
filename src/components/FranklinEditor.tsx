@@ -18,7 +18,7 @@ import { convertBlocksToTables, createSectionMetadata, convertTablesToBlocks } f
 /**
  * Rich text editor for rendering and updated content for helix. 
  */
-export const HelixEditor: React.FC = () => {
+export const FranklinEditor: React.FC = () => {
     const editor = useRef(null)
     const [content, setContent] = useState('');
     const [config, setConfig] = useState({});

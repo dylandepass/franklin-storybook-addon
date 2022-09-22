@@ -18,4 +18,4 @@ if (module && module.hot && module.hot.decline) {
 
 // make it work with --isolatedModules
 export default {};
-export { Template as HelixTemplate };
+export { Template as FranklinTemplate };

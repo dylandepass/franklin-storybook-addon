@@ -1,14 +1,14 @@
 {
-  "name": "@dylandepass/helix-storybook-addon",
+  "name": "@dylandepass/franklin-storybook-addon",
   "version": "0.0.15",
-  "description": "A storybook addon for building Helix blocks.",
+  "description": "A storybook addon for building Franklin blocks.",
   "keywords": [
-    "Helix",
+    "Franklin",
     "storybook-addons"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/dylandepass/helix-storybook-addon"
+    "url": "https://github.com/dylandepass/franklin-storybook-addon"
   },
   "author": "Dylan Depass <dyland@adobe.com>",
   "license": "Apache-2.0",
@@ -71,7 +71,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "storybook": {
-    "displayName": "Helix Storybook Addon",
+    "displayName": "Franklin Storybook Addon",
     "supportedFrameworks": [
       "html"
     ],

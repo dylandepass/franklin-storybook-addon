@@ -1,9 +1,9 @@
-import { HelixApp } from '../.storybook/helix-web-library.esm.js';
+import { Franklin } from '../.storybook/franklin-web-library.esm.js';
 import { Template } from '../src/template';
 import decorate from './cards.js';
 import style from './cards.css';
 
-export const Three = (args, context) => Template(HelixApp, args, context, decorate);
+export const Three = (args, context) => Template(Franklin, args, context, decorate);
 
 Three.storyName = 'Text';
 

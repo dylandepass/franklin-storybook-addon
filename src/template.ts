@@ -12,7 +12,7 @@
 
 /**
  * Prepares and decorates the blocks to be rendered in storybook
- * @param HelixApp The helix-web-library used by the story, this is used to create sections
+ * @param Franklin The franklin-web-library used by the story, this is used to create sections
  * @param args The storybook args
  * @param parameters The story parameters
  * @param main The main container for the decorated content
@@ -20,7 +20,7 @@
  * @param decorate The decorate method for the block used in the storybook
  * @returns A fully decorated element for rendering in storybook
  */
-function prepare(HelixApp: any, args: any, parameters: any, main: any, content: HTMLElement | Element, decorate: any) {
+function prepare(Franklin: any, args: any, parameters: any, main: any, content: HTMLElement | Element, decorate: any) {
   const { selector, index } = parameters;
   const { sectionStyles, blockClasses } = args;
   const section = document.createElement('div');
@@ -38,8 +38,8 @@ function prepare(HelixApp: any, args: any, parameters: any, main: any, content: 
     section.firstElementChild.classList.add(blockClasses);
   }
 
-  if(typeof HelixApp.init === 'function') {
-    HelixApp.init({
+  if(typeof Franklin.init === 'function') {
+    Franklin.init({
       rumEnabled: false,
       enableBlockLoader: false,
       loadHeader: false,
@@ -47,11 +47,11 @@ function prepare(HelixApp: any, args: any, parameters: any, main: any, content: 
     })
       .decorate();
   }else {
-    HelixApp.config.rumEnabled = false;
-    HelixApp.config.enableBlockLoader = false;
-    HelixApp.config.loadHeader = false;
-    HelixApp.config.loadFooter = false;
-    HelixApp.decorate();
+    Franklin.config.rumEnabled = false;
+    Franklin.config.enableBlockLoader = false;
+    Franklin.config.loadHeader = false;
+    Franklin.config.loadFooter = false;
+    Franklin.decorate();
   }
   
   if(decorate) {
@@ -72,20 +72,20 @@ function prepare(HelixApp: any, args: any, parameters: any, main: any, content: 
 
 /**
  * Prepares the blocks to be rendered in storybook 
- * @param HelixApp The helix-web-library used by the story, this is used to create sections
+ * @param Franklin The franklin-web-library used by the story, this is used to create sections
  * @param args The storybook args
  * @param context The storybook context
  * @param decorate The decorate method of the component
  * @returns A fully decorated element for rendering in storybook
  */
-export function Template(HelixApp: any, args: any, context: any, decorate: any) {
+export function Template(Franklin: any, args: any, context: any, decorate: any) {
   const parser = new DOMParser();
   const main = document.createElement('main');
   const { parameters } = context;
   const { path, host } = parameters;
   if (args.content && args.updated) {
     const element = parser.parseFromString(args.content, 'text/html');
-    return prepare(HelixApp, args, parameters, main, element.body, decorate);
+    return prepare(Franklin, args, parameters, main, element.body, decorate);
   } else {
     const url = `${host}${path}`;
     fetch(url).then(res => {
@@ -93,7 +93,7 @@ export function Template(HelixApp: any, args: any, context: any, decorate: any) 
         const regex = new RegExp('./media', 'g');
         htmlText = htmlText.replace(regex, `${host}/media`);
         const element = parser.parseFromString(htmlText, 'text/html');
-        return prepare(HelixApp, args, parameters, main, element.body, decorate);
+        return prepare(Franklin, args, parameters, main, element.body, decorate);
       });
     });
   }

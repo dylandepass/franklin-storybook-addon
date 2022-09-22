@@ -11,12 +11,12 @@
  */
 
 import React from "react";
-import { HelixEditor } from "./components/HelixEditor";
+import { FranklinEditor } from "./components/FranklinEditor";
 
 interface TabProps {
   active: boolean;
 }
 
 export const EditorTab: React.FC<TabProps> = ({ active }) => {
-  return active ? <HelixEditor key="editor" /> : null;
+  return active ? <FranklinEditor key="editor" /> : null;
 };

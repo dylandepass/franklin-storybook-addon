@@ -692,7 +692,7 @@ function sampleRUM(checkpoint, data = {}, generation = '') {
         lazy: () => {
           // use classic script to avoid CORS issues
           const script = document.createElement('script');
-          script.src = 'https://rum.hlx.page/.rum/@adobe/helix-rum-enhancer@^1/src/index.js';
+          script.src = 'https://rum.hlx.page/.rum/@adobe/-rum-enhancer@^1/src/index.js';
           document.head.appendChild(script);
           sendPing(data);
           return true;
