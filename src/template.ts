@@ -25,10 +25,11 @@ function prepare(HelixApp: any, args: any, parameters: any, main: any, content: 
   const { sectionStyles, blockClasses } = args;
   const section = document.createElement('div');
 
-  const node = content.querySelectorAll(selector).item(index);
+  const node = content.querySelectorAll(selector).item(index) || content.querySelector(selector);
 
   main.appendChild(section);
-  section.innerHTML = node.outerHTML;
+
+  section.innerHTML = parameters.root ? node.parentNode.innerHTML : node.outerHTML;
 
   if (sectionStyles) {
     section.classList.add(sectionStyles);
@@ -54,7 +55,7 @@ function prepare(HelixApp: any, args: any, parameters: any, main: any, content: 
   }
   
   if(decorate) {
-    decorate(section.querySelector('.block'));
+    decorate(section.querySelector(selector));
   }
 
   // Block loader is disabled, set loaded incase site sets in override

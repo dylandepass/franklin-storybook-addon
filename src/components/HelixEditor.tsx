@@ -22,6 +22,7 @@ export const HelixEditor: React.FC = () => {
     const editor = useRef(null)
     const [content, setContent] = useState('');
     const [config, setConfig] = useState({});
+    const [updated, setUpdated] = useState(false);
     const [_, updateArgs] = useArgs();
     const host = useParameter('host', undefined);
     const path = useParameter('path', undefined);
@@ -67,10 +68,13 @@ export const HelixEditor: React.FC = () => {
     }, [path]);
 
     function onChange(newContent: string) {
-        const div = document.createElement('div');
-        div.innerHTML = newContent;
-        const res = convertTablesToBlocks(div);
-        updateArgs({ 'content': res });
+        if(updated) {
+            const div = document.createElement('div');
+            div.innerHTML = newContent;
+            const res = convertTablesToBlocks(div);
+            updateArgs({ 'content': res, 'updated': updated });
+        }
+        setUpdated(true);
     }
 
     return (
