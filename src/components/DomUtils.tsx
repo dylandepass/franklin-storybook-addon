@@ -104,10 +104,10 @@ function decorateTable(table: HTMLTableElement) {
 export function createTable(data: any, blockClasses: string = '') {
     const table = document.createElement('table');
     decorateTable(table);
-    const maxColumns = data.length > 1 ? data[1].length : 1;
+    const maxColumns = data.reduce((data:[], max:number) => data.length > max ? data.length : max, 0).length;
     data.forEach((row: any, index: number) => {
         const tr = document.createElement('tr');
-        row.forEach((cell: any) => {
+        row.forEach((cell: any, cellIndex: number) => {
             const td = document.createElement('td');
 
             // The first column should be the block name row
@@ -118,6 +118,9 @@ export function createTable(data: any, blockClasses: string = '') {
                 const classes = cell.split(' ');
                 const blockName = classes.shift();
                 cell = `${blockName}${(blockClasses) ? ` (${blockClasses})` : ''}`;
+            // Check if row has less columns than maxColumns, if so than expand last cell
+            }else if(cellIndex === row.length-1 && cellIndex < maxColumns) {
+                td.colSpan = maxColumns - cellIndex;
             }
 
             decorateTd(td);
@@ -130,6 +133,7 @@ export function createTable(data: any, blockClasses: string = '') {
             } else {
                 td.append(cell);
             }
+            
             tr.appendChild(td);
         });
         table.appendChild(tr);

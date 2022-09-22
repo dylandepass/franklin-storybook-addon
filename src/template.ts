@@ -83,7 +83,7 @@ export function Template(HelixApp: any, args: any, context: any, decorate: any) 
   const main = document.createElement('main');
   const { parameters } = context;
   const { path, host } = parameters;
-  if (args.content) {
+  if (args.content && args.updated) {
     const element = parser.parseFromString(args.content, 'text/html');
     return prepare(HelixApp, args, parameters, main, element.body, decorate);
   } else {
