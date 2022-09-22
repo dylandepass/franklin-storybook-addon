@@ -84,8 +84,11 @@ export function Template(Franklin: any, args: any, context: any, decorate: any) 
   const { parameters } = context;
   const { path, host } = parameters;
   if (args.content && args.updated) {
-    const element = parser.parseFromString(args.content, 'text/html');
-    return prepare(Franklin, args, parameters, main, element.body, decorate);
+    // Wrap in promise so main in returned and overrides old version when decorator runs
+    Promise.resolve().then(() => {
+      const element = parser.parseFromString(args.content, 'text/html');
+      return prepare(Franklin, args, parameters, main, element.body, decorate);
+    });
   } else {
     const url = `${host}${path}`;
     fetch(url).then(res => {
