@@ -1,3 +1,15 @@
+# v0.0.19 (Thu Sep 22 2022)
+
+#### ⚠️ Pushed to `main`
+
+- fix: wrap prepare in promise to fix stale content in main ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.18 (Thu Sep 22 2022)
 
 #### ⚠️ Pushed to `main`
