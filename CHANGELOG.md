@@ -1,3 +1,16 @@
+# v0.0.16 (Thu Sep 22 2022)
+
+#### ⚠️ Pushed to `main`
+
+- fix: rename to franklin ([@dylandepass](https://github.com/dylandepass))
+- fix: use franklin-web-library ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.15 (Thu Sep 22 2022)
 
 #### ⚠️ Pushed to `main`
