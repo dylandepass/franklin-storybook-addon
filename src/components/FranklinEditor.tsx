@@ -62,6 +62,7 @@ export const FranklinEditor: React.FC = () => {
                     createSectionMetadata(div, story);
                     setContent(div.outerHTML);
                     setConfig(config);
+                    setUpdated(false);
                 })
                 .catch(err => console.log(err));
         }
