@@ -249,8 +249,7 @@ export function convertTablesToBlocks(element: HTMLElement): string {
                     img.width = Number(img.getAttribute('data-og-width'));
                     img.height = Number(img.getAttribute('data-og-height'));
                     if(img.parentNode.nodeName === 'TD') {
-                        img.parentElement.append(paragraph);
-                        paragraph.append(picture);
+                        img.parentElement.append(picture);
                         picture.append(img);
                     }else{
                         img.parentElement.replaceWith(paragraph);
