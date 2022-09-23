@@ -248,9 +248,15 @@ export function convertTablesToBlocks(element: HTMLElement): string {
                     const picture = document.createElement('picture');
                     img.width = Number(img.getAttribute('data-og-width'));
                     img.height = Number(img.getAttribute('data-og-height'));
-                    img.parentElement.replaceWith(paragraph);
-                    paragraph.append(picture);
-                    picture.append(img);
+                    if(img.parentNode.nodeName === 'TD') {
+                        img.parentElement.append(paragraph);
+                        paragraph.append(picture);
+                        picture.append(img);
+                    }else{
+                        img.parentElement.replaceWith(paragraph);
+                        paragraph.append(picture);
+                        picture.append(img);
+                    }
 
                 });
                 Array.from(col.childNodes).forEach((c) => colDiv.append(c));
