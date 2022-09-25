@@ -10,6 +10,18 @@
 
 ---
 
+# v0.0.24 (Sun Sep 25 2022)
+
+#### ⚠️ Pushed to `main`
+
+- fix: fix bug when live editing with root true ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.23 (Thu Sep 22 2022)
 
 #### ⚠️ Pushed to `main`
