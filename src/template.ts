@@ -11,8 +11,19 @@
  */
 
 /**
+ * Sets up the Franklin block loader for use in storybook
+ * @param franklin Franklin block loader instance
+ */
+function configureFranklin(franklin: any) {
+    franklin.config.rumEnabled = false;
+    franklin.config.enableBlockLoader = false;
+    franklin.config.loadHeader = false;
+    franklin.config.loadFooter = false;
+}
+
+/**
  * Prepares and decorates the blocks to be rendered in storybook
- * @param Franklin The franklin-web-library used by the story, this is used to create sections
+ * @param Franklin The franklin-web-library used by the story, either an instance or the class
  * @param args The storybook args
  * @param parameters The story parameters
  * @param main The main container for the decorated content
@@ -31,29 +42,20 @@ function prepare(Franklin: any, args: any, parameters: any, main: any, content: 
 
   section.innerHTML = parameters.root ? node.parentNode.innerHTML : node.outerHTML;
 
+  const franklinInstance = typeof Franklin.init === 'function' ? Franklin.init() : Franklin;
+  configureFranklin(franklinInstance);
+  franklinInstance.decorate();
+  
   if (sectionStyles) {
     section.classList.add(sectionStyles);
   }
+
   if (blockClasses) {
-    section.firstElementChild.classList.add(blockClasses);
+    section.querySelectorAll('.block').forEach((block) => {
+      block.classList.add(blockClasses);
+    });
   }
 
-  if(typeof Franklin.init === 'function') {
-    Franklin.init({
-      rumEnabled: false,
-      enableBlockLoader: false,
-      loadHeader: false,
-      loadFooter: false
-    })
-      .decorate();
-  }else {
-    Franklin.config.rumEnabled = false;
-    Franklin.config.enableBlockLoader = false;
-    Franklin.config.loadHeader = false;
-    Franklin.config.loadFooter = false;
-    Franklin.decorate();
-  }
-  
   if(decorate) {
     decorate(section.querySelector(selector));
   }
@@ -72,7 +74,7 @@ function prepare(Franklin: any, args: any, parameters: any, main: any, content: 
 
 /**
  * Prepares the blocks to be rendered in storybook 
- * @param Franklin The franklin-web-library used by the story, this is used to create sections
+ * @param Franklin The franklin-web-library used by the story, either an instance or the class
  * @param args The storybook args
  * @param context The storybook context
  * @param decorate The decorate method of the component

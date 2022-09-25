@@ -28,6 +28,7 @@ export const FranklinEditor: React.FC = () => {
     const path = useParameter('path', undefined);
     const selector = useParameter('selector', undefined);
     const index = useParameter('index', 0);
+    const root = useParameter('root', 0);
     const state = useStorybookState();
 
     useEffect(() => {
@@ -52,11 +53,12 @@ export const FranklinEditor: React.FC = () => {
                     div.innerHTML = contentHTML;
 
                     // Query for target block and index
-                    if (selector) {
+                    if (root) {
+                        div.innerHTML = div.outerHTML;
+                    } else {
                         const node = div.querySelectorAll(selector).item(index ?? 0);
                         div.innerHTML = node.outerHTML;
                     }
-
                     // Fetch active story
                     const story = state.storiesHash[state.storyId] as any;
                     convertBlocksToTables(div, story.args.blockClasses);
