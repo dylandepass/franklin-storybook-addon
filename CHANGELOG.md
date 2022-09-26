@@ -1,3 +1,15 @@
+# v0.0.25 (Sun Sep 25 2022)
+
+#### ⚠️ Pushed to `main`
+
+- feat: add edit and preview buttons to editor ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.24 (Sun Sep 25 2022)
 
 #### ⚠️ Pushed to `main`
