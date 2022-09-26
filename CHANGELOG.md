@@ -1,3 +1,15 @@
+# v0.0.26 (Sun Sep 25 2022)
+
+#### ⚠️ Pushed to `main`
+
+- fix: change default content image width to auto ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- Dylan Depass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.25 (Sun Sep 25 2022)
 
 #### ⚠️ Pushed to `main`
