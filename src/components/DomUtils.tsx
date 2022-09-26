@@ -269,3 +269,10 @@ export function convertTablesToBlocks(element: HTMLElement): string {
     // Remove wrapped divs from Rich Text editor
     return element.querySelector('div > div').outerHTML;
 }
+
+export function styleDefaultContent(element: HTMLElement): void {
+    element.querySelectorAll('p > picture > img').forEach((img:HTMLImageElement) => {
+        img.style.width = "100%";
+        img.style.height = "auto";
+    });
+}

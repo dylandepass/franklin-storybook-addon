@@ -13,7 +13,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import JoditEditor from "jodit-react";
 import { useStorybookState, useParameter, useArgs } from '@storybook/api';
-import { convertBlocksToTables, createSectionMetadata, convertTablesToBlocks } from "./DomUtils";
+import { convertBlocksToTables, createSectionMetadata, convertTablesToBlocks, styleDefaultContent } from "./DomUtils";
+import { FranklinAdmin } from '../FranklinAdmin';
 
 /**
  * Rich text editor for rendering and updated content for helix. 
@@ -39,7 +40,24 @@ export const FranklinEditor: React.FC = () => {
                     setUpdated(false);
                     const config = {
                         readonly: false,
-                        buttons: ['bold', 'italic', 'underline', 'paragraph', 'image', '|', 'ul', 'li', 'table', '|', 'selectall', 'copy', 'source'],
+                        buttons: ['bold', 'italic', 'underline', 'paragraph', 'image', '|', 'ul', 'li', 'table', '|', 'selectall', 'copy', 'source', '|', '---', {
+                            name: 'View Preview',
+                            tooltip: 'Edit Content Source',
+                            exec: async (editor: any) => {
+                                const admin = new FranklinAdmin();
+                                const previewUrl = await admin.getPreviewUrl(`${host}${path.replace('.plain.html', '')}`);
+                                window.open(previewUrl, "_blank");
+                            }
+                        },
+                        {
+                            name: 'Edit',
+                            tooltip: 'Edit Content Source',
+                            exec: async (editor: any) => {
+                                const admin = new FranklinAdmin();
+                                const editUrl = await admin.fetchEditUrl(`${host}${path}`);
+                                window.open(editUrl, "_blank");
+                            }
+                        }],
                         toolbarAdaptive: false,
                         zIndex: -1
                     }
@@ -63,6 +81,7 @@ export const FranklinEditor: React.FC = () => {
                     const story = state.storiesHash[state.storyId] as any;
                     convertBlocksToTables(div, story.args.blockClasses);
                     createSectionMetadata(div, story);
+                    styleDefaultContent(div);
                     setContent(div.outerHTML);
                     setConfig(config);
                 })
