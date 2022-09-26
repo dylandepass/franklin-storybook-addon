@@ -272,7 +272,7 @@ export function convertTablesToBlocks(element: HTMLElement): string {
 
 export function styleDefaultContent(element: HTMLElement): void {
     element.querySelectorAll('p > picture > img').forEach((img:HTMLImageElement) => {
-        img.style.width = "100%";
+        img.style.width = "auto";
         img.style.height = "auto";
     });
 }
