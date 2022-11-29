@@ -22,7 +22,7 @@
  */
 function prepare(loadPage: any, args: any, parameters: any, main: any, content: HTMLElement | Element, decorate: any) {
   const { selector, index } = parameters;
-  const { sectionStyles, blockClasses } = args;
+  const { sectionClasses, blockClasses } = args;
   const section = document.createElement('div');
 
   const node = content.querySelectorAll(selector).item(index) || content.querySelector(selector);
@@ -33,13 +33,13 @@ function prepare(loadPage: any, args: any, parameters: any, main: any, content: 
 
   loadPage();
   
-  if (sectionStyles) {
-    section.classList.add(sectionStyles);
+  if (sectionClasses) {
+    sectionClasses.forEach((sectionClass : any) => section.classList.add(sectionClass));
   }
 
   if (blockClasses) {
     section.querySelectorAll('.block').forEach((block) => {
-      block.classList.add(blockClasses);
+      blockClasses.forEach((blockClass : any) => block.classList.add(blockClass));
     });
   }
 

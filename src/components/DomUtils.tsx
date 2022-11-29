@@ -160,19 +160,19 @@ export function computeBlockName(name: string) {
  */
 export function createSectionMetadata(element: HTMLElement, story: any) {
     const data = [['section-metadata']];
-    const sectionStyle = story.args.sectionStyles;
-    if (sectionStyle) {
-        if (typeof sectionStyle === 'string') {
-            data.push(['style', sectionStyle]);
-        } else if (Array.isArray(sectionStyle)) {
-            data.push(['style', sectionStyle.join(', ')]);
+    const sectionClasses = story.args.sectionClasses;
+    if (sectionClasses) {
+        if (typeof sectionClasses === 'string') {
+            data.push(['style', sectionClasses]);
+        } else if (Array.isArray(sectionClasses)) {
+            data.push(['style', sectionClasses.join(', ')]);
         }
     }
 
     if (story.argTypes) {
         for (const type of Object.values(story.argTypes) as any) {
             const { table } = type;
-            if (table && type.name !== 'sectionStyles') {
+            if (table && type.name !== 'sectionClasses') {
                 const { category } = table;
                 if (category && category.toLowerCase() === 'section') {
                     const value = story.args[type.name];

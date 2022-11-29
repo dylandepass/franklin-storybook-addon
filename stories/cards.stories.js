@@ -26,7 +26,7 @@ export default {
     },
   },
   argTypes: {
-    sectionStyles: {
+    sectionClasses: {
       options: ['wide', 'zoom'],
       control: { type: 'radio' },
       table: {
