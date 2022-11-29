@@ -1,3 +1,17 @@
+# v0.0.28 (Tue Nov 29 2022)
+
+#### ⚠️ Pushed to `main`
+
+- chore: readme update ([@dylandepass](https://github.com/dylandepass))
+- fix: section styles naming ([@dylandepass](https://github.com/dylandepass))
+- fix:support npm 8 ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- dylandepass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.27 (Mon Nov 28 2022)
 
 #### ⚠️ Pushed to `main`
