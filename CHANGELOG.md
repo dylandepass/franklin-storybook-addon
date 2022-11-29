@@ -1,3 +1,15 @@
+# v0.0.27 (Mon Nov 28 2022)
+
+#### ⚠️ Pushed to `main`
+
+- fix: switch to lib-franklin ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- dylandepass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.26 (Sun Sep 25 2022)
 
 #### ⚠️ Pushed to `main`
