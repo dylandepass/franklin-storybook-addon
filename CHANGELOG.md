@@ -1,3 +1,15 @@
+# v0.0.30 (Tue Nov 29 2022)
+
+#### ⚠️ Pushed to `main`
+
+- fix: support strings and arrays for blockClasses and sectionClasses ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- dylandepass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.29 (Tue Nov 29 2022)
 
 
