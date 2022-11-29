@@ -34,12 +34,20 @@ function prepare(loadPage: any, args: any, parameters: any, main: any, content: 
   loadPage();
   
   if (sectionClasses) {
-    sectionClasses.forEach((sectionClass : any) => section.classList.add(sectionClass));
+    if(Array.isArray(sectionClasses)) {
+      sectionClasses.forEach((sectionClass : any) => section.classList.add(sectionClass));
+    } else {
+      section.classList.add(sectionClasses);
+    }
   }
 
   if (blockClasses) {
     section.querySelectorAll('.block').forEach((block) => {
-      blockClasses.forEach((blockClass : any) => block.classList.add(blockClass));
+        if(Array.isArray(blockClasses)) {
+          blockClasses.forEach((blockClass : any) => block.classList.add(blockClass));
+        } else {
+          block.classList.add(blockClasses);
+        }
     });
   }
 

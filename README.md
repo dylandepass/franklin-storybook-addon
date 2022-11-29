@@ -122,7 +122,7 @@ Add a link to `styles.css`
 
 2. Setup `argTypes`
 
-    The addon supports two types of optional argTypes, `sectionClasses` and `blockClasses`. The option can either be mutually exclusive or not. If you want to support multiple classes at the same time you can change the control type from `radio` to `checkbox`.
+    The addon supports two types of optional argTypes, `sectionClasses` and `blockClasses`. The option can either be mutually exclusive or not. If you want to support multiple classes at the same time you can change the control type from `radio` to `check`.
 
     #### Section Classes
     
