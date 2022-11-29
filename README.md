@@ -1,92 +1,139 @@
-# Storybook Addon Franklin Storybook Addon
+# Franklin Storybook Addon
 A storybook addon for working with Franklin projects.
 
-### Development scripts
+## Configuring your franklin project with Storybook
+
+1. Install storybook html
+
+```bash
+npx storybook init --type html
+```
+
+2. Install the Franklin storybook addon
+
+```bash
+npm install -D @dylandepass/franklin-storybook-addon
+```
+
+3. Update `./storybook/main.js`
+
+Here we are telling storybook to expose the content in `./scripts`, `./styles` and `./icons` as static directies in storybook. 
+This will allow us to use `styles.css` and other dependacies in our stories. We are also registering the `franklin-storybook-addon`
+with storybook.
+
+```json
+module.exports = {
+  "stories": [
+    "../blocks/**/*.stories.js",
+    "../blocks/**/*.stories.jsx",
+    "../blocks/**/*.stories.mdx",
+  ],
+  "addons": [
+    "@storybook/addon-essentials",
+    "@dylandepass/franklin-storybook-addon"
+  ],
+  "framework": "@storybook/html",
+  "staticDirs": [
+    { from: "../scripts", to: "/scripts" }, 
+    { from: "../styles", to: "/styles" }, 
+    { from: "../icons", to: "/icons" }
+  ],
+};
+```
+
+4. Delete the sample storybook content
+```bash
+rm -rf ./stories
+```
+
+5. Tell storybook to load `styles.css`
+
+Create the file `preview-head.html` inside of `./.storybook`.
+
+Add a link to `styles.css`
+
+```html
+<link rel="stylesheet" href="./styles/styles.css">
+```
+
+## Create stories content to load in storybook
+
+1. In the root of the site content store (gdrive or sharepoint). Create a folder called `storybook`.
+
+2. Inside the `storybook` folder create a document for a block you want to use within storybook. I.E cards
+
+3. Paste an example cards content block inside the document and preview it.
+
+4. In order for storybook to be able to load the example block we need to set a wildcard CORS policy on it.
+
+    * Create a sheet at in the content store at `/.helix/headers` if one doesn't exist.
+
+5. Add the following rows
+
+    |url|key|value|
+    |-|-|-|
+    |/storybook/**|access-control-allow-origin|*|
+
+## Create the story
+
+1. Create a stories file for each block you want to use with storybook. I recommend putting the stories file in the same folder as the block code. (I.E blocks/cards/cards.stories.js)
+
+    Here is an stories file for a cards block.
+
+     ```js
+        import { FranklinTemplate } from '@dylandepass/franklin-storybook-addon';
+        import { loadPage } from '../../scripts/scripts.js';
+        import decorate from './cards.js';
+        import style from './cards.css';
+
+        export const Cards = (args, context) => FranklinTemplate(loadPage, args, context, decorate);
+
+        Cards.parameters = {
+            path: '/storybook/cards.plain.html',
+            selector: '.cards',
+            index: 0,
+        };
+
+        Cards.storyName = 'Cards';
+
+        /**
+        * Default Config
+        */
+        export default {
+            title: 'Cards',
+            parameters: {
+                docs: {
+                    description: {
+                        component: 'A block to display cards',
+                    },
+                },
+            },
+            argTypes: {
+                blockClasses: {
+                    options: ['light', 'dark'],
+                    control: { type: 'radio' },
+                    table: {
+                        category: 'Block',
+                    },
+                },
+            },
+        };
+     ```
+
+2. Setup `argTypes`
+
+    The addon supports two types of optional argTypes, `sectionClasses` and `blockClasses`. The option can either be mutually exclusive or not. If you want to support multiple classes at the same time you can change the control type from `radio` to `checkbox`.
+
+    #### Section Classes
+    
+    Any classes added to `sectionClasses` will be added to the section element as well as added get added to `section-metadata` in the content tab. 
+
+    #### Block Classes
+
+    Any classes added to `blockClasses` will be added to the block element and block heading in the content tab.
+
+## Development scripts
 
 - `yarn start` runs babel in watch mode and starts Storybook
+
 - `yarn build` build and package your addon code
-
-### Switch from TypeScript to JavaScript
-
-Don't want to use TypeScript? We offer a handy eject command: `yarn eject-ts`
-
-This will convert all code to JS. It is a destructive process, so we recommended running this before you start writing any code.
-
-## What's included?
-
-![Demo](https://user-images.githubusercontent.com/42671/107857205-e7044380-6dfa-11eb-8718-ad02e3ba1a3f.gif)
-
-The addon code lives in `src`. It demonstrates all core addon related concepts. The three [UI paradigms](https://storybook.js.org/docs/react/addons/addon-types#ui-based-addons)
-
-- `src/Tool.js`
-- `src/Panel.js`
-- `src/Tab.js`
-
-Which, along with the addon itself, are registered in `src/preset/manager.js`.
-
-Managing State and interacting with a story:
-
-- `src/withGlobals.js` & `src/Tool.js` demonstrates how to use `useGlobals` to manage global state and modify the contents of a Story.
-- `src/withRoundTrip.js` & `src/Panel.js` demonstrates two-way communication using channels.
-- `src/Tab.js` demonstrates how to use `useParameter` to access the current story's parameters.
-
-Your addon might use one or more of these patterns. Feel free to delete unused code. Update `src/preset/manager.js` and `src/preset/preview.js` accordingly.
-
-Lastly, configure you addon name in `src/constants.js`.
-
-### Metadata
-
-Storybook addons are listed in the [catalog](https://storybook.js.org/addons) and distributed via npm. The catalog is populated by querying npm's registry for Storybook-specific metadata in `package.json`. This project has been configured with sample data. Learn more about available options in the [Addon metadata docs](https://storybook.js.org/docs/react/addons/addon-catalog#addon-metadata).
-
-## Release Management
-
-### Setup
-
-This project is configured to use [auto](https://github.com/intuit/auto) for release management. It generates a changelog and pushes it to both GitHub and npm. Therefore, you need to configure access to both:
-
-- [`NPM_TOKEN`](https://docs.npmjs.com/creating-and-viewing-access-tokens#creating-access-tokens) Create a token with both _Read and Publish_ permissions.
-- [`GH_TOKEN`](https://github.com/settings/tokens) Create a token with the `repo` scope.
-
-Then open your `package.json` and edit the following fields:
-
-- `name`
-- `author`
-- `repository`
-
-#### Local
-
-To use `auto` locally create a `.env` file at the root of your project and add your tokens to it:
-
-```bash
-GH_TOKEN=<value you just got from GitHub>
-NPM_TOKEN=<value you just got from npm>
-```
-
-Lastly, **create labels on GitHub**. You’ll use these labels in the future when making changes to the package.
-
-```bash
-npx auto create-labels
-```
-
-If you check on GitHub, you’ll now see a set of labels that `auto` would like you to use. Use these to tag future pull requests.
-
-#### GitHub Actions
-
-This template comes with GitHub actions already set up to publish your addon anytime someone pushes to your repository.
-
-Go to `Settings > Secrets`, click `New repository secret`, and add your `NPM_TOKEN`.
-
-### Creating a release
-
-To create a release locally you can run the following command, otherwise the GitHub action will make the release for you.
-
-```sh
-yarn release
-```
-
-That will:
-
-- Build and package the addon code
-- Bump the version
-- Push a release to GitHub and npm
-- Push a changelog to GitHub
