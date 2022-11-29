@@ -1,9 +1,9 @@
-import { Franklin } from '../.storybook/franklin-web-library.esm.js';
+import { loadPage } from '../.storybook/scripts.js';
 import { Template } from '../src/template';
 import decorate from './cards.js';
 import style from './cards.css';
 
-export const Three = (args, context) => Template(Franklin, args, context, decorate);
+export const Three = (args, context) => Template(loadPage, args, context, decorate);
 
 Three.storyName = 'Text';
 

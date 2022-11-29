@@ -11,17 +11,6 @@
  */
 
 /**
- * Sets up the Franklin block loader for use in storybook
- * @param franklin Franklin block loader instance
- */
-function configureFranklin(franklin: any) {
-    franklin.config.rumEnabled = false;
-    franklin.config.enableBlockLoader = false;
-    franklin.config.loadHeader = false;
-    franklin.config.loadFooter = false;
-}
-
-/**
  * Prepares and decorates the blocks to be rendered in storybook
  * @param Franklin The franklin-web-library used by the story, either an instance or the class
  * @param args The storybook args
@@ -31,7 +20,7 @@ function configureFranklin(franklin: any) {
  * @param decorate The decorate method for the block used in the storybook
  * @returns A fully decorated element for rendering in storybook
  */
-function prepare(Franklin: any, args: any, parameters: any, main: any, content: HTMLElement | Element, decorate: any) {
+function prepare(loadPage: any, args: any, parameters: any, main: any, content: HTMLElement | Element, decorate: any) {
   const { selector, index } = parameters;
   const { sectionStyles, blockClasses } = args;
   const section = document.createElement('div');
@@ -42,9 +31,7 @@ function prepare(Franklin: any, args: any, parameters: any, main: any, content: 
 
   section.innerHTML = parameters.root ? node.parentNode.innerHTML : node.outerHTML;
 
-  const franklinInstance = typeof Franklin.init === 'function' ? Franklin.init() : Franklin;
-  configureFranklin(franklinInstance);
-  franklinInstance.decorate();
+  loadPage();
   
   if (sectionStyles) {
     section.classList.add(sectionStyles);
