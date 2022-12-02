@@ -21,7 +21,7 @@ Here we are telling storybook to expose the content in `./scripts`, `./styles` a
 This will allow us to use `styles.css` and other dependacies in our stories. We are also registering the `franklin-storybook-addon`
 with storybook.
 
-```json
+```javascript
 module.exports = {
   "stories": [
     "../blocks/**/*.stories.js",
