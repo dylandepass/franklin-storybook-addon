@@ -1,3 +1,15 @@
+# v0.0.31 (Thu Dec 22 2022)
+
+#### ⚠️ Pushed to `main`
+
+- fix: Remove inline styling added during blocks to tables conversion (dylandepass@gmail.com)
+
+#### Authors: 1
+
+- Dylan Depass (dylandepass@gmail.com)
+
+---
+
 # v0.0.30 (Tue Nov 29 2022)
 
 #### ⚠️ Pushed to `main`
