@@ -131,6 +131,33 @@ Add a link to `styles.css`
     #### Block Classes
 
     Any classes added to `blockClasses` will be added to the block element and block heading in the content tab.
+    
+    
+ 3. Modify `scripts.js`
+    
+    The addon requires access to `loadPage()` method from `scripts.js` in order to decorate the franklin blocks correctly. You will need to update `scripts.js` to export the `loadPage()` method and also wrap the call to `loadPage` in a check to prevent it from being called when running in storybook.
+    
+    ```javascript
+      export async function loadPage() {
+        console.log('loading page');
+        await loadEager(document);
+        await loadLazy(document);
+        loadDelayed();
+      }
+
+      if(!window.STORYBOOK_ENV) {
+        loadPage();
+      }
+    ```
+    
+    Optionally, you may also want to wrap `loadHeader` and `loadFooter` in `loadLazy` in a check as well to prevent them from attemping to load in storybook.
+    
+    ```javascript
+      if(!window.STORYBOOK_ENV) {
+        loadHeader(doc.querySelector('header'));
+        loadFooter(doc.querySelector('footer'));
+      }
+    ```
 
 ## Development scripts
 
