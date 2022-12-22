@@ -54,7 +54,7 @@
     "@storybook/html": "^6.5.9",
     "@storybook/theming": "^6.5.8",
     "@types/react": "^18.0.17",
-    "auto": "^10.3.0",
+    "auto": "10.3.0",
     "babel-loader": "^8.1.0",
     "boxen": "^5.0.1",
     "concurrently": "^6.2.0",
