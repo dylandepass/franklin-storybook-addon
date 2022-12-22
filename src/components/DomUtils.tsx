@@ -238,6 +238,11 @@ export function convertBlocksToTables(element: HTMLElement, blockClasses: string
  */
 export function convertTablesToBlocks(element: HTMLElement): string {
     const wrapperDiv = document.createElement('div');
+
+    // Remove inline styling added during blocks to tables conversion
+    const contentContainer = element.querySelector(':scope > div');
+    contentContainer.removeAttribute('style');
+    
     element.querySelectorAll('table').forEach((table) => {
         table.querySelectorAll('tr:not(:first-of-type)').forEach((row, index) => {
             const rowDiv = document.createElement('div');
