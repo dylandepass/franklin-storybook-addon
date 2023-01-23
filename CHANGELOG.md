@@ -1,3 +1,16 @@
+# v0.0.34 (Mon Jan 23 2023)
+
+#### 🐛 Bug Fix
+
+- fix: ci node version [#3](https://github.com/dylandepass/franklin-storybook-addon/pull/3) ([@dylandepass](https://github.com/dylandepass))
+- fix: update packages [#2](https://github.com/dylandepass/franklin-storybook-addon/pull/2) ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- dylandepass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.31 (Mon Jan 23 2023)
 
 #### 🐛 Bug Fix
