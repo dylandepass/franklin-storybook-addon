@@ -21,7 +21,7 @@ Here we are telling storybook to expose the content in `./scripts`, `./styles` a
 This will allow us to use `styles.css` and other dependacies in our stories. We are also registering the `franklin-storybook-addon`
 with storybook.
 
-```javascript
+```js
 module.exports = {
   "stories": [
     "../blocks/**/*.stories.js",
@@ -137,7 +137,7 @@ Add a link to `styles.css`
     
     The addon requires access to `loadPage()` method from `scripts.js` in order to decorate the franklin blocks correctly. You will need to update `scripts.js` to export the `loadPage()` method and also wrap the call to `loadPage` in a check to prevent it from being called when running in storybook.
     
-    ```javascript
+    ```js
       export async function loadPage() {
         console.log('loading page');
         await loadEager(document);
@@ -152,7 +152,7 @@ Add a link to `styles.css`
     
     Optionally, you may also want to wrap `loadHeader` and `loadFooter` in `loadLazy` in a check as well to prevent them from attemping to load in storybook.
     
-    ```javascript
+    ```js
       if(!window.STORYBOOK_ENV) {
         loadHeader(doc.querySelector('header'));
         loadFooter(doc.querySelector('footer'));
