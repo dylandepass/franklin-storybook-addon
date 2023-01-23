@@ -35,7 +35,7 @@
     "start": "concurrently \"yarn build:watch\" \"yarn storybook -- --no-manager-cache --quiet\"",
     "build-storybook": "build-storybook",
     "prerelease": "zx scripts/prepublish-checks.mjs",
-    "release": "yarn build && auto shipit",
+    "release": "yarn build && auto shipit --base-branch main",
     "eject-ts": "zx scripts/eject-typescript.mjs"
   },
   "devDependencies": {
