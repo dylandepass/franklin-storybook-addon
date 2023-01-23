@@ -1,6 +1,6 @@
 {
   "name": "@dylandepass/franklin-storybook-addon",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "description": "A storybook addon for building Franklin blocks.",
   "keywords": [
     "Franklin",
@@ -31,7 +31,7 @@
     "build": "concurrently \"yarn buildBabel\" \"yarn buildTsc\"",
     "build:watch": "concurrently \"yarn buildBabel:esm -- --watch\" \"yarn buildTsc -- --watch\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
+    "storybook": "start-storybook -p 6006",
     "start": "concurrently \"yarn build:watch\" \"yarn storybook -- --no-manager-cache --quiet\"",
     "build-storybook": "build-storybook",
     "prerelease": "zx scripts/prepublish-checks.mjs",
