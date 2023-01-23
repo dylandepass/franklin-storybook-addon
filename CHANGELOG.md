@@ -1,3 +1,21 @@
+# v0.0.31 (Mon Jan 23 2023)
+
+#### 🐛 Bug Fix
+
+- fix: inline styling [#1](https://github.com/dylandepass/franklin-storybook-addon/pull/1) ([@dylandepass](https://github.com/dylandepass))
+
+#### ⚠️ Pushed to `master`
+
+- fix: update packages ([@dylandepass](https://github.com/dylandepass))
+- chore: update README.md ([@dylandepass](https://github.com/dylandepass))
+- chore: update readme ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- dylandepass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.31 (Thu Dec 22 2022)
 
 #### ⚠️ Pushed to `main`
