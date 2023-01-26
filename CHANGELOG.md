@@ -1,3 +1,15 @@
+# v0.0.37 (Thu Jan 26 2023)
+
+#### ⚠️ Pushed to `main`
+
+- fix: attempt auto block fixes ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- dylandepass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.36 (Thu Jan 26 2023)
 
 #### 🐛 Bug Fix
