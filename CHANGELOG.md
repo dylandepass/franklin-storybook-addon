@@ -1,3 +1,15 @@
+# v0.0.36 (Thu Jan 26 2023)
+
+#### 🐛 Bug Fix
+
+- fix: simplify addon for storybook 7 [#5](https://github.com/dylandepass/franklin-storybook-addon/pull/5) ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- dylandepass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.34 (Mon Jan 23 2023)
 
 #### 🐛 Bug Fix
