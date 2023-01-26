@@ -52,7 +52,7 @@ function prepare(loadPage: any, args: any, parameters: any, main: any, content: 
   }
 
   if(decorate) {
-    decorate(section.querySelector(selector));
+    decorate(parameters.autoBlock ? main.querySelector(selector) : section.querySelector(selector));
   }
 
   // Block loader is disabled, set loaded incase site sets in override
@@ -84,7 +84,13 @@ export function Template(Franklin: any, args: any, context: any, decorate: any) 
     // Wrap in promise so main in returned and overrides old version when decorator runs
     Promise.resolve().then(() => {
       const element = parser.parseFromString(args.content, 'text/html');
-      return prepare(Franklin, args, parameters, main, element.body, decorate);
+
+      try {
+        return prepare(Franklin, args, parameters, main, element.body, decorate);
+      }catch(err) {
+        console.error(err);
+        return err;
+      }
     });
   } else {
     const url = `${host}${path}`;
