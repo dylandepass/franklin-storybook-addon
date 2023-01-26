@@ -13,7 +13,7 @@
 import { addons, types } from "@storybook/addons";
 import { ADDON_ID, TAB_ID } from "../constants";
 import { EditorTab } from "../EditorTab";
-import theme from './theme';
+// import theme from './theme';
 
 addons.register(ADDON_ID, () => {
   addons.add(TAB_ID, {
@@ -23,6 +23,6 @@ addons.register(ADDON_ID, () => {
   });
 });
 
-addons.setConfig({
-  theme,
-});
+// addons.setConfig({
+//   theme,
+// });

@@ -1,0 +1,93 @@
+🔎 checking possible migrations..
+
+🔎 found a 'newFrameworks' migration:
+╭ Automigration detected ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                                                                     │
+│   We've detected you are using an older format of Storybook frameworks and builders.                                                                │
+│                                                                                                                                                     │
+│   In Storybook 7, frameworks also specify the builder to be used.                                                                                   │
+│                                                                                                                                                     │
+│   We can remove the dependencies that are no longer needed:                                                                                         │
+│                                                                                                                                                     │
+│   And set up the @storybook/html-webpack5 framework that already includes the builder.                                                              │
+│                                                                                                                                                     │
+│   To learn more about the framework field, see: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#framework-field-mandatory           │
+│                                                                                                                                                     │
+│   Webpack4 users                                                                                                                                    │
+│                                                                                                                                                     │
+│   Unless you're using Storybook's Vite builder, this automigration will install a Webpack5-based framework.                                         │
+│                                                                                                                                                     │
+│   If you were using Storybook's Webpack4 builder (default in 6.x, discontinued in 7.0), this could be a breaking                                    │
+│   change -- especially if your project has a custom webpack configuration.                                                                          │
+│                                                                                                                                                     │
+│   To learn more about migrating from Webpack4, see: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#webpack4-support-discontinued   │
+│                                                                                                                                                     │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+[?25l? Do you want to run the 'newFrameworks' migration on your project? › (Y/n)[2K[G✔ Do you want to run the 'newFrameworks' migration on your project? … yes
+[?25h✅ Removing legacy dependencies: 
+✅ Installing new dependencies: @storybook/html-webpack5
+✅ Updating framework field in main.js
+✅ ran newFrameworks migration
+
+🔎 found a 'autodocsTrue' migration:
+╭ Automigration detected ─────────────────────────────────────────────────────────────────────────╮
+│                                                                                                 │
+│   We've detected that your main.js configuration file has not configured autodocs. In 6.x we    │
+│   we defaulted to having a autodocs for every story, in 7.x you need to opt in per-component.   │
+│   However, we can set the `docs.autodocs` to true to approximate the old behaviour:             │
+│                                                                                                 │
+│   docs: { autodocs: true }                                                                      │
+│                                                                                                 │
+│   More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#autodocs           │
+│                                                                                                 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────╯
+[?25l? Do you want to run the 'autodocsTrue' migration on your project? › (Y/n)[2K[G✔ Do you want to run the 'autodocsTrue' migration on your project? … yes
+[?25h✅ Setting 'docs.autodocs' to true in main.js
+✅ ran autodocsTrue migration
+
+⚠️  failed to check fix missing-babelrc
+
+Error: Multiple configuration files found. Please remove one:
+ - .babelrc.js
+ - /Users/dylandepass/Documents/code/github/franklin-storybook-addon/.babelrc.json
+from /Users/dylandepass/Documents/code/github/franklin-storybook-addon
+    at /Users/dylandepass/Documents/code/github/franklin-storybook-addon/node_modules/@storybook/cli/node_modules/@babel/core/lib/config/files/configuration.js:198:13
+    at Array.reduce (<anonymous>)
+    at loadOneConfig (/Users/dylandepass/Documents/code/github/franklin-storybook-addon/node_modules/@storybook/cli/node_modules/@babel/core/lib/config/files/configuration.js:196:26)
+    at loadOneConfig.next (<anonymous>)
+    at findRelativeConfig (/Users/dylandepass/Documents/code/github/franklin-storybook-addon/node_modules/@storybook/cli/node_modules/@babel/core/lib/config/files/configuration.js:176:23)
+    at findRelativeConfig.next (<anonymous>)
+    at buildRootChain (/Users/dylandepass/Documents/code/github/franklin-storybook-addon/node_modules/@storybook/cli/node_modules/@babel/core/lib/config/config-chain.js:99:48)
+    at buildRootChain.next (<anonymous>)
+    at loadPrivatePartialConfig (/Users/dylandepass/Documents/code/github/franklin-storybook-addon/node_modules/@storybook/cli/node_modules/@babel/core/lib/config/partial.js:79:62)
+    at loadPrivatePartialConfig.next (<anonymous>)
+
+╭ Migration check ran with failures ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                                                                               │
+│                                                                                                                                                               │
+│         Successful migrations:                                                                                                                                │
+│                                                                                                                                                               │
+│    newFrameworks, autodocsTrue                                                                                                                                │
+│                                                                                                                                                               │
+│           Failed migrations:                                                                                                                                  │
+│                                                                                                                                                               │
+│       missing-babelrc:                                                                                                                                        │
+│       Multiple configuration files found. Please remove one:                                                                                                  │
+│        - .babelrc.js                                                                                                                                          │
+│        - /Users/dylandepass/Documents/code/github/franklin-storybook-addon/.babelrc.json                                                                      │
+│       from /Users/dylandepass/Documents/code/github/franklin-storybook-addon                                                                                  │
+│                                                                                                                                                               │
+│                                                                                                                                                               │
+│       You can find the full logs in /Users/dylandepass/Documents/code/github/franklin-storybook-addon/migration-storybook.log                                 │
+│                                                                                                                                                               │
+│       ─────────────────────────────────────────────────                                                                                                       │
+│                                                                                                                                                               │
+│       If you'd like to run the migrations again, you can do so by running 'npx storybook@next automigrate'                                                    │
+│                                                                                                                                                               │
+│   The automigrations try to migrate common patterns in your project, but might not contain everything needed to migrate to the latest version of Storybook.   │
+│                                                                                                                                                               │
+│   Please check the changelog and migration guide for manual migrations and more information: https://storybook.js.org/migration-guides/7.0                    │
+│   And reach out on Discord if you need help: https://discord.gg/storybook                                                                                     │
+│                                                                                                                                                               │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+

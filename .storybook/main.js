@@ -1,6 +1,11 @@
 module.exports = {
-  stories: [
-    "../stories/**/*.stories.@(js|jsx|ts|tsx)",
-  ],
+  stories: ["../stories/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: ["../preset.js", "@storybook/addon-essentials"],
+  framework: {
+    name: "@storybook/html-webpack5",
+    options: {}
+  },
+  docs: {
+    autodocs: true
+  }
 };
