@@ -52,7 +52,7 @@ function prepare(loadPage: any, args: any, parameters: any, main: any, content: 
   }
 
   if(decorate) {
-    decorate(parameters.autoBlock ? main.querySelector(selector) : section.querySelector(selector));
+    decorate(parameters.autoBlock ? main.querySelector('.block') : section.querySelector(selector));
   }
 
   // Block loader is disabled, set loaded incase site sets in override
