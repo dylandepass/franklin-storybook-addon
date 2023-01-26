@@ -10,101 +10,39 @@
  * governing permissions and limitations under the License.
  */
 
-import React, { useState, useRef, useEffect } from 'react';
-import JoditEditor from "jodit-react";
-import { useStorybookState, useParameter, useArgs } from '@storybook/api';
-import { convertBlocksToTables, createSectionMetadata, convertTablesToBlocks, styleDefaultContent } from "./DomUtils";
+import React from 'react';
+import { useParameter } from '@storybook/manager-api';
 import { FranklinAdmin } from '../FranklinAdmin';
 
 /**
  * Rich text editor for rendering and updated content for helix. 
  */
 export const FranklinEditor: React.FC = () => {
-    const editor = useRef(null)
-    const [content, setContent] = useState('');
-    const [config, setConfig] = useState({});
-    const [updated, setUpdated] = useState(false);
-    const [_, updateArgs] = useArgs();
     const host = useParameter('host', undefined);
     const path = useParameter('path', undefined);
-    const selector = useParameter('selector', undefined);
-    const index = useParameter('index', 0);
-    const root = useParameter('root', 0);
-    const state = useStorybookState();
 
-    useEffect(() => {
-        if (host && path) {
-            fetch(`${host}${path}`)
-                .then(res => res.text())
-                .then(res => {
-                    setUpdated(false);
-                    const config = {
-                        readonly: false,
-                        buttons: ['bold', 'italic', 'underline', 'paragraph', 'image', '|', 'ul', 'li', 'table', '|', 'selectall', 'copy', 'source', '|', '---', {
-                            name: 'View Preview',
-                            tooltip: 'Edit Content Source',
-                            exec: async (editor: any) => {
-                                const admin = new FranklinAdmin();
-                                const previewUrl = await admin.getPreviewUrl(`${host}${path.replace('.plain.html', '')}`);
-                                window.open(previewUrl, "_blank");
-                            }
-                        },
-                        {
-                            name: 'Edit',
-                            tooltip: 'Edit Content Source',
-                            exec: async (editor: any) => {
-                                const admin = new FranklinAdmin();
-                                const editUrl = await admin.fetchEditUrl(`${host}${path}`);
-                                window.open(editUrl, "_blank");
-                            }
-                        }],
-                        toolbarAdaptive: false,
-                        zIndex: -1
-                    }
+    async function viewPreview() {
+        const admin = new FranklinAdmin();
+        const previewUrl = await admin.getPreviewUrl(`${host}${path.replace('.plain.html', '')}`);
+        window.open(previewUrl, "_blank");
+    }
 
-                    // Fix relative images to absolute
-                    const regex = new RegExp('./media', 'g');
-                    const contentHTML = res.replace(regex, `${host}/media`);
+    async function viewSource() {
+        const admin = new FranklinAdmin();
+        const editUrl = await admin.fetchEditUrl(`${host}${path}`);
+        window.open(editUrl, "_blank");
+    }
 
-                    // Prepare content for rendering in jodit
-                    const div = document.createElement('div');
-                    div.innerHTML = contentHTML;
-
-                    // Query for target block and index
-                    if (root) {
-                        div.innerHTML = div.outerHTML;
-                    } else {
-                        const node = div.querySelectorAll(selector).item(index ?? 0);
-                        div.innerHTML = node.outerHTML;
-                    }
-                    // Fetch active story
-                    const story = state.storiesHash[state.storyId] as any;
-                    convertBlocksToTables(div, story.args.blockClasses);
-                    createSectionMetadata(div, story);
-                    styleDefaultContent(div);
-                    setContent(div.outerHTML);
-                    setConfig(config);
-                })
-                .catch(err => console.log(err));
-        }
-    }, [path, selector, index]);
-
-    function onChange(newContent: string) {
-        if(updated) {
-            const div = document.createElement('div');
-            div.innerHTML = newContent;
-            const res = convertTablesToBlocks(div);
-            updateArgs({ 'content': res, 'updated': updated });
-        }
-        setUpdated(true);
+    if(path) {
+        return (
+            <div style={{display: "flex", flexDirection: "column", gap: "20px", padding: "20px", width:"140px"}}>
+                <button onClick={viewPreview}>View Preview</button>
+                <button onClick={viewSource}>View Source</button>
+            </div>
+        );
     }
 
     return (
-        <JoditEditor
-            ref={editor}
-            value={content}
-            config={config}
-            onChange={onChange}
-        />
-    );
+        <div style={{padding: "20px"}}><h3>Not a franklin based story</h3></div>
+    )
 }
