@@ -18,7 +18,7 @@ import { EditorTab } from "../EditorTab";
 addons.register(ADDON_ID, () => {
   addons.add(TAB_ID, {
     type: types.PANEL,
-    title: 'Content',
+    title: 'Franklin',
     render: EditorTab,
   });
 });
