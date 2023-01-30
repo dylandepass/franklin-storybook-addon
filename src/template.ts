@@ -25,6 +25,12 @@ function prepare(loadPage: any, args: any, parameters: any, main: any, content: 
   const { sectionClasses, blockClasses } = args;
   const section = document.createElement('div');
 
+  if(parameters.root) {
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = content.outerHTML;
+    content = wrapper;
+  }
+
   const node = content.querySelectorAll(selector).item(index) || content.querySelector(selector);
 
   if(!decorate) {
