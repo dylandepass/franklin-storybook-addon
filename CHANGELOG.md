@@ -1,3 +1,15 @@
+# v0.0.40 (Mon Jan 30 2023)
+
+#### ⚠️ Pushed to `main`
+
+- fix: wrap root content ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- dylandepass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.39 (Mon Jan 30 2023)
 
 #### ⚠️ Pushed to `main`
