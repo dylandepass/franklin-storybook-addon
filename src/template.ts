@@ -21,15 +21,23 @@
  * @returns A fully decorated element for rendering in storybook
  */
 function prepare(loadPage: any, args: any, parameters: any, main: any, content: HTMLElement | Element, decorate: any) {
-  const { selector, index } = parameters;
+  const { selector, index, template } = parameters;
   const { sectionClasses, blockClasses } = args;
   const section = document.createElement('div');
 
   const node = content.querySelectorAll(selector).item(index) || content.querySelector(selector);
 
+  if(!decorate) {
+    return;
+  }
+
   main.appendChild(section);
 
   section.innerHTML = parameters.root ? node.parentNode.innerHTML : node.outerHTML;
+
+  if(template) {
+    decorate(parameters.autoBlock ? main.querySelector('.block') : section.querySelector(selector));
+  }
 
   loadPage();
   
@@ -51,7 +59,7 @@ function prepare(loadPage: any, args: any, parameters: any, main: any, content: 
     });
   }
 
-  if(decorate) {
+  if(decorate && !template) {
     decorate(parameters.autoBlock ? main.querySelector('.block') : section.querySelector(selector));
   }
 
