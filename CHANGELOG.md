@@ -1,3 +1,16 @@
+# v0.0.42 (Tue Jan 31 2023)
+
+#### ⚠️ Pushed to `main`
+
+- Merge branch 'main' of https://github.com/dylandepass/franklin-storybook-addon ([@dylandepass](https://github.com/dylandepass))
+- fix: await loadPage ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- dylandepass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.41 (Mon Jan 30 2023)
 
 #### ⚠️ Pushed to `main`
