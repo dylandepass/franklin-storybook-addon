@@ -150,9 +150,13 @@ Add a link to `styles.css`
       }
     ```
     
-    Optionally, you may also want to wrap `loadHeader` and `loadFooter` in `loadLazy` in a check as well to prevent them from attemping to load in storybook.
+    Optionally, you may also want to wrap `loadBlocks`, `loadHeader` and `loadFooter` in `loadLazy` in a check as well to prevent them from attemping to load in storybook. The franklin stoybook addon will takcare of decorating the block.
     
     ```js
+      if (!window.__STORYBOOK_PREVIEW__) {
+        await loadBlocks(main);
+      }
+
       if(!window.__STORYBOOK_PREVIEW__) {
         loadHeader(doc.querySelector('header'));
         loadFooter(doc.querySelector('footer'));
