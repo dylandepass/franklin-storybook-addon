@@ -20,7 +20,7 @@
  * @param decorate The decorate method for the block used in the storybook
  * @returns A fully decorated element for rendering in storybook
  */
-function prepare(loadPage: any, args: any, parameters: any, main: any, content: HTMLElement | Element, decorate: any) {
+async function prepare(loadPage: any, args: any, parameters: any, main: any, content: HTMLElement | Element, decorate: any) {
   const { selector, index } = parameters;
   const { sectionClasses, blockClasses } = args;
   const section = document.createElement('div');
@@ -31,7 +31,7 @@ function prepare(loadPage: any, args: any, parameters: any, main: any, content: 
 
   section.innerHTML = parameters.root ? node.parentNode.innerHTML : node.outerHTML;
 
-  loadPage();
+  await loadPage();
   
   if (sectionClasses) {
     if(Array.isArray(sectionClasses)) {
@@ -82,7 +82,7 @@ export function Template(Franklin: any, args: any, context: any, decorate: any) 
   const { path, host } = parameters;
   if (args.content && args.updated) {
     // Wrap in promise so main in returned and overrides old version when decorator runs
-    Promise.resolve().then(() => {
+    Promise.resolve().then(async () => {
       const element = parser.parseFromString(args.content, 'text/html');
 
       try {
@@ -95,7 +95,7 @@ export function Template(Franklin: any, args: any, context: any, decorate: any) 
   } else {
     const url = `${host}${path}`;
     fetch(url).then(res => {
-      res.text().then(htmlText => {
+      res.text().then(async (htmlText) => {
         const regex = new RegExp('./media', 'g');
         htmlText = htmlText.replace(regex, `${host}/media`);
         const element = parser.parseFromString(htmlText, 'text/html');

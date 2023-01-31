@@ -145,7 +145,7 @@ Add a link to `styles.css`
         loadDelayed();
       }
 
-      if(!window.STORYBOOK_ENV) {
+      if(!window.__STORYBOOK_PREVIEW__) {
         loadPage();
       }
     ```
@@ -153,7 +153,7 @@ Add a link to `styles.css`
     Optionally, you may also want to wrap `loadHeader` and `loadFooter` in `loadLazy` in a check as well to prevent them from attemping to load in storybook.
     
     ```js
-      if(!window.STORYBOOK_ENV) {
+      if(!window.__STORYBOOK_PREVIEW__) {
         loadHeader(doc.querySelector('header'));
         loadFooter(doc.querySelector('footer'));
       }

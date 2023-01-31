@@ -95,7 +95,7 @@ async function loadLazy(doc) {
   const element = hash ? main.querySelector(hash) : false;
   if (hash && element) element.scrollIntoView();
 
-  if(!window.STORYBOOK_ENV) {
+  if(!window.__STORYBOOK_PREVIEW__) {
     loadHeader(doc.querySelector('header'));
     loadFooter(doc.querySelector('footer'));
   }
@@ -124,6 +124,6 @@ export async function loadPage() {
   loadDelayed();
 }
 
-if(!window.STORYBOOK_ENV) {
+if(!window.__STORYBOOK_PREVIEW__) {
   loadPage();
 }

@@ -3,15 +3,14 @@ import { Template } from '../src/template';
 import decorate from './cards.js';
 import style from './cards.css';
 
-export const Three = (args, context) => Template(loadPage, args, context, decorate);
-
-Three.storyName = 'Three Cards';
-
-Three.parameters = {
-  path: '/storybook/cards.plain.html',
-  selector: '.cards',
-  index: 0
-}
+export const Three = {
+  parameters: {
+    path: '/storybook/cards.plain.html',
+    selector: '.cards',
+    index: 0
+  },
+  render: (args, context) => Template(loadPage, args, context, decorate),
+};
 
 /**
  * Default Config
