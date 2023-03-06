@@ -30,8 +30,8 @@ export function Template(loadPage: any, args: any, context: any, decorate: any) 
       htmlText = htmlText.replace(regex, `${host}/media`);
       const element = parser.parseFromString(htmlText, 'text/html');
       body.innerHTML = element.body.innerHTML;
-      if(!window.hlx) window.hlx = {};
-      window.hlx.suppressLoadPage = true;
+      if(!(window as any).hlx) (window as any).hlx = {};
+      (window as any).hlx.suppressLoadPage = true;
       return loadPage(false);
     });
   });
