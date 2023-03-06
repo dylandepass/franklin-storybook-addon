@@ -18,7 +18,7 @@
  * @param decorate The decorate method of the component
  * @returns A fully decorated element for rendering in storybook
  */
-export function Template(loadPage: any, args: any, context: any, decorate: any) {
+export function PageTemplate(loadPage: any, args: any, context: any, decorate: any) {
   const parser = new DOMParser();
   const body = document.createElement('body');
   const { parameters } = context;

@@ -11,10 +11,12 @@
  */
 
 import { BlockTemplate } from './BlockTemplate';
+import { PageTemplate } from './PageTemplate';
 import { sourceDecorator } from './decorators/sourceDecorator';
 
 // make it work with --isolatedModules
 export default {};
 export { BlockTemplate as FranklinTemplate };
 export { BlockTemplate as FranklinBlock };
+export { PageTemplate as FranklinPage };
 export { sourceDecorator as FranklinSourceDecorator };
