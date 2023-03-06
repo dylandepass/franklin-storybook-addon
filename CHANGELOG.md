@@ -1,3 +1,15 @@
+# v0.0.47 (Mon Mar 06 2023)
+
+#### ⚠️ Pushed to `main`
+
+- fix: attempt to fix page templates ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- dylandepass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.46 (Mon Mar 06 2023)
 
 #### ⚠️ Pushed to `main`
