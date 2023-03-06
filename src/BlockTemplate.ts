@@ -10,6 +10,8 @@
  * governing permissions and limitations under the License.
  */
 
+import { addons, useEffect } from '@storybook/addons';
+
 /**
  * Prepares and decorates the blocks to be rendered in storybook
  * @param Franklin The franklin-web-library used by the story, either an instance or the class
@@ -20,7 +22,7 @@
  * @param decorate The decorate method for the block used in the storybook
  * @returns A fully decorated element for rendering in storybook
  */
-async function prepare(loadPage: any, args: any, parameters: any, main: any, content: HTMLElement | Element, decorate: any) {
+async function prepare(loadPage: any, args: any, context:any, parameters: any, main: any, content: HTMLElement | Element, decorate: any) {
   const { selector, index } = parameters;
   const { sectionClasses, blockClasses } = args;
   const section = document.createElement('div');
@@ -63,8 +65,6 @@ async function prepare(loadPage: any, args: any, parameters: any, main: any, con
   main.querySelectorAll('.block[data-block-status="initialized"]').forEach((block:HTMLDivElement) => {
     block.setAttribute('data-block-status', 'loaded');
   });
-
-  return main;
 }
 
 /**
@@ -75,7 +75,7 @@ async function prepare(loadPage: any, args: any, parameters: any, main: any, con
  * @param decorate The decorate method of the component
  * @returns A fully decorated element for rendering in storybook
  */
-export function Template(Franklin: any, args: any, context: any, decorate: any) {
+export function BlockTemplate(Franklin: any, args: any, context: any, decorate: any) {
   const parser = new DOMParser();
   const main = document.createElement('main');
   const { parameters } = context;
@@ -86,7 +86,7 @@ export function Template(Franklin: any, args: any, context: any, decorate: any) 
       const element = parser.parseFromString(args.content, 'text/html');
 
       try {
-        return prepare(Franklin, args, parameters, main, element.body, decorate);
+        return prepare(Franklin, args, context, parameters, main, element.body, decorate);
       }catch(err) {
         console.error(err);
         return err;
@@ -99,7 +99,7 @@ export function Template(Franklin: any, args: any, context: any, decorate: any) 
         const regex = new RegExp('./media', 'g');
         htmlText = htmlText.replace(regex, `${host}/media`);
         const element = parser.parseFromString(htmlText, 'text/html');
-        return prepare(Franklin, args, parameters, main, element.body, decorate);
+        return prepare(Franklin, args, context, parameters, main, element.body, decorate);
       });
     });
   }

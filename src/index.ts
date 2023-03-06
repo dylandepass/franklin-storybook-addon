@@ -10,8 +10,11 @@
  * governing permissions and limitations under the License.
  */
 
-import { Template } from './template';
+import { BlockTemplate } from './BlockTemplate';
+import { sourceDecorator } from './decorators/sourceDecorator';
 
 // make it work with --isolatedModules
 export default {};
-export { Template as FranklinTemplate };
+export { BlockTemplate as FranklinTemplate };
+export { BlockTemplate as FranklinBlock };
+export { sourceDecorator as FranklinSourceDecorator };

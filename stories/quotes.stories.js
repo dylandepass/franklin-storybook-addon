@@ -1,16 +1,15 @@
 import { loadPage } from '../.storybook/scripts.js';
-import { Template } from '../src/template';
+import { BlockTemplate } from '../src/BlockTemplate';
 import decorate from './quotes.js';
 import style from './quotes.css';
 
-export const Quotes = (args, context) => Template(loadPage, args, context, decorate);
-
-Quotes.storyName = 'Quotes';
-
-Quotes.parameters = {
-  path: '/storybook/quotes.plain.html',
-  selector: '.quotes',
-  index: 0
+export const Quotes = {
+  parameters: {
+    path: '/storybook/quotes.plain.html',
+    selector: '.quotes',
+    index: 0
+  },
+  render: (args, context) => BlockTemplate(loadPage, args, context, decorate),
 }
 
 /**

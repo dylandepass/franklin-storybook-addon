@@ -13,10 +13,10 @@
 import { create } from '@storybook/theming';
 
 export default create({
-    base: 'light',
+    base: 'dark',
     brandTitle: 'Franklin Storybook',
     brandUrl: 'https://hlx.live',
-    brandImage: 'https://i.imgur.com/bWbLEK5.png',
+    brandImage: 'https://i.imgur.com/SmoRh6H.png',
     brandTarget: '_self',
     appContentBg: 'white',
 });

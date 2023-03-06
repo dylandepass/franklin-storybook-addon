@@ -1,5 +1,5 @@
 import { loadPage } from '../.storybook/scripts.js';
-import { Template } from '../src/template';
+import { BlockTemplate } from '../src/BlockTemplate';
 import decorate from './cards.js';
 import style from './cards.css';
 
@@ -7,9 +7,11 @@ export const Three = {
   parameters: {
     path: '/storybook/cards.plain.html',
     selector: '.cards',
+    decorate,
+    loadPage,
     index: 0
   },
-  render: (args, context) => Template(loadPage, args, context, decorate),
+  render: (args, context) => BlockTemplate(loadPage, args, context, decorate),
 };
 
 /**

@@ -10,6 +10,13 @@
  * governing permissions and limitations under the License.
  */
 
-export const ADDON_ID = "storybook/franklin-storybook-addon";
-export const FRANKLIN_ID = `${ADDON_ID}/franklin`;
-export const CODE_ID = `${ADDON_ID}/code`;
+import React from "react";
+import { Code } from "./components/Code";
+
+interface TabProps {
+  active: boolean;
+}
+
+export const CodeTab: React.FC<TabProps> = ({ active }) => {
+  return active ? <Code key="code" /> : null;
+};

@@ -1,9 +1,9 @@
 import { loadPage } from '../.storybook/scripts.js';
-import { Template } from '../src/template';
+import { BlockTemplate } from '../src/BlockTemplate';
 import decorate from './cards.js';
 import style from './cards.css';
 
-export const Three = (args, context) => Template(loadPage, args, context, decorate);
+export const Three = (args, context) => BlockTemplate(loadPage, args, context, decorate);
 
 Three.storyName = 'Text';
 

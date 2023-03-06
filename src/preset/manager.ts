@@ -11,18 +11,24 @@
  */
 
 import { addons, types } from "@storybook/addons";
-import { ADDON_ID, TAB_ID } from "../constants";
+import { ADDON_ID, FRANKLIN_ID, CODE_ID } from "../constants";
 import { EditorTab } from "../EditorTab";
-// import theme from './theme';
+import { CodeTab } from "../CodeTab";
+import theme from './theme';
 
 addons.register(ADDON_ID, () => {
-  addons.add(TAB_ID, {
+  addons.add(CODE_ID, {
+    type: types.PANEL,
+    title: 'Code',
+    render: CodeTab,
+  });
+  addons.add(FRANKLIN_ID, {
     type: types.PANEL,
     title: 'Franklin',
     render: EditorTab,
   });
 });
 
-// addons.setConfig({
-//   theme,
-// });
+addons.setConfig({
+  theme,
+});

@@ -95,7 +95,7 @@ async function loadLazy(doc) {
   const element = hash ? main.querySelector(hash) : false;
   if (hash && element) element.scrollIntoView();
 
-  if(!window.__STORYBOOK_PREVIEW__) {
+  if(window.hlx.suppressLoadPage) {
     loadHeader(doc.querySelector('header'));
     loadFooter(doc.querySelector('footer'));
   }
@@ -117,8 +117,11 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 
-export async function loadPage() {
+export async function loadPage(supress = false) {
   console.log('loading page');
+  if(supress) {
+    window.hlx.suppressLoadPage = true;
+  }
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
