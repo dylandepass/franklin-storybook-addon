@@ -1,3 +1,15 @@
+# v0.0.45 (Mon Mar 06 2023)
+
+#### ⚠️ Pushed to `main`
+
+- fix: export PageTemplate (dylandepass@gmail.com)
+
+#### Authors: 1
+
+- Dylan Depass (dylandepass@gmail.com)
+
+---
+
 # v0.0.44 (Mon Mar 06 2023)
 
 #### ⚠️ Pushed to `main`
