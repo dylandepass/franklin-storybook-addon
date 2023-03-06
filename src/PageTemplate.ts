@@ -12,13 +12,12 @@
 
 /**
  * Prepares the blocks to be rendered in storybook 
- * @param Franklin The franklin-web-library used by the story, either an instance or the class
+ * @param loadPage The page load method
  * @param args The storybook args
  * @param context The storybook context
- * @param decorate The decorate method of the component
  * @returns A fully decorated element for rendering in storybook
  */
-export function PageTemplate(loadPage: any, args: any, context: any, decorate: any) {
+export function PageTemplate(loadPage: any, args: any, context: any) {
   const parser = new DOMParser();
   const body = document.createElement('body');
   const { parameters } = context;
@@ -29,11 +28,12 @@ export function PageTemplate(loadPage: any, args: any, context: any, decorate: a
       const regex = new RegExp('./media', 'g');
       htmlText = htmlText.replace(regex, `${host}/media`);
       const element = parser.parseFromString(htmlText, 'text/html');
-      body.innerHTML = element.body.innerHTML;
+      body.innerHTML = element.documentElement.outerHTML;
       if(!(window as any).hlx) (window as any).hlx = {};
       (window as any).hlx.suppressLoadPage = true;
+      (window as any).hlx.suppressBlockLoader = false;
       (window as any).hlx.suppressLoadHeaderFooter = false;
-      return loadPage(false);
+      return loadPage();
     });
   });
 

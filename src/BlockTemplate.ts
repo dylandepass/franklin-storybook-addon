@@ -14,7 +14,7 @@ import { addons, useEffect } from '@storybook/addons';
 
 /**
  * Prepares and decorates the blocks to be rendered in storybook
- * @param Franklin The franklin-web-library used by the story, either an instance or the class
+ * @param loadPage The page load method
  * @param args The storybook args
  * @param parameters The story parameters
  * @param main The main container for the decorated content
@@ -37,6 +37,7 @@ async function prepare(loadPage: any, args: any, context:any, parameters: any, m
   if(!(window as any).hlx) (window as any).hlx = {};
   (window as any).hlx.suppressLoadPage = true;
   (window as any).hlx.suppressLoadHeaderFooter = true;
+  (window as any).hlx.suppressBlockLoader = true;
   await loadPage();
   
   if (sectionClasses) {
@@ -73,13 +74,13 @@ async function prepare(loadPage: any, args: any, context:any, parameters: any, m
 
 /**
  * Prepares the blocks to be rendered in storybook 
- * @param Franklin The franklin-web-library used by the story, either an instance or the class
+ * @param loadPage The page load method
  * @param args The storybook args
  * @param context The storybook context
  * @param decorate The decorate method of the component
  * @returns A fully decorated element for rendering in storybook
  */
-export function BlockTemplate(Franklin: any, args: any, context: any, decorate: any) {
+export function BlockTemplate(loadPage: any, args: any, context: any, decorate: any) {
   const parser = new DOMParser();
   const main = document.createElement('main');
   const { parameters } = context;
@@ -90,7 +91,7 @@ export function BlockTemplate(Franklin: any, args: any, context: any, decorate: 
       const element = parser.parseFromString(args.content, 'text/html');
 
       try {
-        return prepare(Franklin, args, context, parameters, main, element.body, decorate);
+        return prepare(loadPage, args, context, parameters, main, element.body, decorate);
       }catch(err) {
         console.error(err);
         return err;
@@ -103,7 +104,7 @@ export function BlockTemplate(Franklin: any, args: any, context: any, decorate: 
         const regex = new RegExp('./media', 'g');
         htmlText = htmlText.replace(regex, `${host}/media`);
         const element = parser.parseFromString(htmlText, 'text/html');
-        return prepare(Franklin, args, context, parameters, main, element.body, decorate);
+        return prepare(loadPage, args, context, parameters, main, element.body, decorate);
       });
     });
   }
