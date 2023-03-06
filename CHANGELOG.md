@@ -1,3 +1,16 @@
+# v0.0.44 (Mon Mar 06 2023)
+
+#### ⚠️ Pushed to `main`
+
+- fix: cast window to any (dylandepass@gmail.com)
+- fix: add sourceDecorator and Page Template (dylandepass@gmail.com)
+
+#### Authors: 1
+
+- Dylan Depass (dylandepass@gmail.com)
+
+---
+
 # v0.0.43 (Tue Jan 31 2023)
 
 #### ⚠️ Pushed to `main`
