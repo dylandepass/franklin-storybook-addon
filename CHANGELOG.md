@@ -1,3 +1,15 @@
+# v0.0.46 (Mon Mar 06 2023)
+
+#### ⚠️ Pushed to `main`
+
+- fix: update supression ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- dylandepass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.45 (Mon Mar 06 2023)
 
 #### ⚠️ Pushed to `main`
