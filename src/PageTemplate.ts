@@ -32,6 +32,7 @@ export function PageTemplate(loadPage: any, args: any, context: any, decorate: a
       body.innerHTML = element.body.innerHTML;
       if(!(window as any).hlx) (window as any).hlx = {};
       (window as any).hlx.suppressLoadPage = true;
+      (window as any).hlx.suppressLoadHeaderFooter = false;
       return loadPage(false);
     });
   });

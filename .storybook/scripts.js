@@ -119,9 +119,6 @@ function loadDelayed() {
 
 export async function loadPage(supress = false) {
   console.log('loading page');
-  if(supress) {
-    window.hlx.suppressLoadPage = true;
-  }
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();

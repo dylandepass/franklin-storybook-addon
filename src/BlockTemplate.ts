@@ -33,6 +33,10 @@ async function prepare(loadPage: any, args: any, context:any, parameters: any, m
 
   section.innerHTML = parameters.root ? node.parentNode.innerHTML : node.outerHTML;
 
+
+  if(!(window as any).hlx) (window as any).hlx = {};
+  (window as any).hlx.suppressLoadPage = true;
+  (window as any).hlx.suppressLoadHeaderFooter = true;
   await loadPage();
   
   if (sectionClasses) {
