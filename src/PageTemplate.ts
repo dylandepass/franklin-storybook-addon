@@ -28,12 +28,13 @@ export function PageTemplate(loadPage: any, args: any, context: any) {
       const regex = new RegExp('./media', 'g');
       htmlText = htmlText.replace(regex, `${host}/media`);
       const element = parser.parseFromString(htmlText, 'text/html');
-      body.innerHTML = element.documentElement.outerHTML;
+      body.innerHTML = element.body.innerHTML;
       if(!(window as any).hlx) (window as any).hlx = {};
       (window as any).hlx.suppressLoadPage = true;
       (window as any).hlx.suppressBlockLoader = false;
       (window as any).hlx.suppressLoadHeaderFooter = false;
-      return loadPage();
+      await loadPage();
+      body.classList.add('appear');
     });
   });
 
