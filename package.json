@@ -1,6 +1,6 @@
 {
   "name": "@dylandepass/franklin-storybook-addon",
-  "version": "0.0.43",
+  "version": "0.0.44",
   "description": "A storybook addon for building Franklin blocks.",
   "keywords": [
     "Franklin",
