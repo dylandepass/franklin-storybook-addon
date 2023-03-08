@@ -1,3 +1,15 @@
+# v0.0.50 (Wed Mar 08 2023)
+
+#### ⚠️ Pushed to `main`
+
+- fix: update storybook ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- dylandepass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.49 (Mon Mar 06 2023)
 
 #### ⚠️ Pushed to `main`
