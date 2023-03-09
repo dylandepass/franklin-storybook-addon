@@ -1,3 +1,15 @@
+# v0.0.53 (Wed Mar 08 2023)
+
+#### ⚠️ Pushed to `main`
+
+- fix: use outerHTML for source decorator ([@dylandepass](https://github.com/dylandepass))
+
+#### Authors: 1
+
+- dylandepass ([@dylandepass](https://github.com/dylandepass))
+
+---
+
 # v0.0.52 (Wed Mar 08 2023)
 
 #### ⚠️ Pushed to `main`
