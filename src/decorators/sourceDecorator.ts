@@ -2,6 +2,7 @@ import { addons } from '@storybook/addons';
 
 export function sourceDecorator(storyFn: any, context: any) {
   const story = context.originalStoryFn(context.args, context);
+  console.log('source decorator run');
   setTimeout(() =>{
     addons
       .getChannel()

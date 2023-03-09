@@ -13,6 +13,7 @@ export const Code: React.FC = () => {
 
   useEffect(() => {
     const rendered = (channel as any)?.data?.['franklin/block-rendered']?.[0] || 'No code found';
+    console.log('rendereed', rendered);
     if(rendered.code) {
       setCode(rendered.code);
     }
