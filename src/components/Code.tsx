@@ -10,6 +10,8 @@ export const Code: React.FC = () => {
   const [code, setCode] = useState('');
   const api = useStorybookApi();
   const channel = api?.getChannel() || {};
+  console.log('c');
+  console.log(channel);
 
   useEffect(() => {
     const rendered = (channel as any)?.data?.['franklin/block-rendered']?.[0] || { code: 'No code found' };
