@@ -1,3 +1,15 @@
+# v0.0.51 (Wed Mar 08 2023)
+
+#### ⚠️ Pushed to `main`
+
+- fix: switching between panels (dylandepass@gmail.com)
+
+#### Authors: 1
+
+- Dylan Depass (dylandepass@gmail.com)
+
+---
+
 # v0.0.50 (Wed Mar 08 2023)
 
 #### ⚠️ Pushed to `main`
