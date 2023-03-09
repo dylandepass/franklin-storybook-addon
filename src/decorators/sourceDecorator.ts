@@ -1,4 +1,5 @@
 import { addons } from '@storybook/addons';
+import { STORY_RENDERED } from '@storybook/core-events'
 
 export function sourceDecorator(storyFn: any, context: any) {
   const story = context.originalStoryFn(context.args, context);
@@ -10,6 +11,9 @@ export function sourceDecorator(storyFn: any, context: any) {
     addons
       .getChannel()
       .emit('franklin/block-rendered', { code: story instanceof HTMLElement ? story.outerHTML : story });
+    addons
+      .getChannel()
+      .emit(STORY_RENDERED, { code: story instanceof HTMLElement ? story.outerHTML : story });      
   }, 800);
   return story;
 }
