@@ -5,7 +5,7 @@ export function sourceDecorator(storyFn: any, context: any) {
   setTimeout(() =>{
     addons
       .getChannel()
-      .emit('franklin/block-rendered', { code: story instanceof HTMLElement ? story.innerHTML : story });
+      .emit('franklin/block-rendered', { code: story instanceof HTMLElement ? story.outerHTML : story });
   }, 800);
   return story;
 }
