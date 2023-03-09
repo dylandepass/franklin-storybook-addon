@@ -6,6 +6,6 @@ export function sourceDecorator(storyFn: any, context: any) {
     addons
       .getChannel()
       .emit('franklin/block-rendered', { code: story instanceof HTMLElement ? story.innerHTML : story });
-  }, 400);
+  }, 800);
   return story;
 }
